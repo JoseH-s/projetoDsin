@@ -6,13 +6,10 @@
 }
 
 .App {
-  /* App ocupa toda a viewport. Não centralizamos por padrão, pois a Home deve usar todo o espaço.
-     O centramento é aplicado apenas ao estado de login via a classe .login-bg. */
   min-height: 100vh;
   width: 100%;
 }
 
-/* Background e centramento usados somente na tela de login */
 .login-bg {
   background-image: url("./assets/Login.png");
   background-size: cover;
