@@ -12,7 +12,6 @@ export function Upload({ onBack, onNavigate }) {
     function handleFile(e) {
         const file = e.target.files && e.target.files[0];
         if (file) {
-            // placeholder: aqui você pode subir o arquivo ou mostrar preview
             console.log('Arquivo selecionado:', file.name);
         }
     }

@@ -1,4 +1,3 @@
-/* Layout similar à Home: sidebar fixa e logo no topo */
 .container {
     position: relative;
     width: 100%;
@@ -63,7 +62,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* centraliza verticalmente */
     align-items: center;
     box-sizing: border-box;
 }
