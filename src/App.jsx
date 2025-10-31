@@ -1,5 +1,6 @@
 import './App.css';
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from './Components/Login';
 import { Home } from './Components/Home';
 import Upload from './Components/Upload';
@@ -7,21 +8,24 @@ import Form from './Components/Form';
 
 export function App() {
   const [isLogged, setIsLogged] = useState(false);
-  const [page, setPage] = useState('home');
 
   return (
-    <div className={`App ${!isLogged ? 'login-bg' : ''}`}>
-      {!isLogged ? (
-        <Login onLoginSuccess={() => setIsLogged(true)} />
-      ) : (
-        page === 'home' ? (
-          <Home onNavigate={(p) => setPage(p)} />
-        ) : page === 'upload' ? (
-          <Upload onBack={() => setPage('home')} onNavigate={(p) => setPage(p)} />
-        ) : page === 'form' ? (
-          <Form />
-        ) : null
-      )}
-    </div>
+    <BrowserRouter>
+      <div className={`App ${!isLogged ? 'login-bg' : ''}`}>
+        {!isLogged ? (
+          <Routes>
+            <Route path="/login" element={<Login onLoginSuccess={() => setIsLogged(true)} />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        ) : (
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/upload" element={<Upload />} />
+            <Route path="/form" element={<Form />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        )}
+      </div>
+    </BrowserRouter>
   );
 }

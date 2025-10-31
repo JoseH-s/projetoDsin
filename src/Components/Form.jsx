@@ -1,7 +1,9 @@
 import styles from './Form.module.css';
 import logo from '../assets/dsin.svg';
+import { useNavigate } from 'react-router-dom';
 
 export function Form() {
+    const navigate = useNavigate();
     return (
         <div className={styles.container}>
             <aside className={styles.sidebar} />
@@ -69,7 +71,7 @@ export function Form() {
                         <label className={styles.checkboxLabel}><input type="checkbox" /> Eu me responsabilizo pelas informações inseridas no formulário e estou ciente das implicações legais do registro de infrações.</label>
 
                         <div className={styles.confirmWrap}>
-                            <button type="button" className={styles.confirmBtn}>Confirmar</button>
+                            <button type="button" className={styles.confirmBtn} onClick={() => navigate('/')}>Confirmar</button>
                         </div>
                     </div>
                 </form>

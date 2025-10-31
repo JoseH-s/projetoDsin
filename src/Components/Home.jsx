@@ -1,8 +1,10 @@
 import styles from './Home.module.css';
 import { FaCalendarDay, FaTimes, FaHourglassHalf, FaCheck } from "react-icons/fa";
 import logo from '../assets/dsin.svg';
+import { useNavigate } from 'react-router-dom';
 
-export function Home({ onNavigate }) {
+export function Home() {
+    const navigate = useNavigate();
     const historico = [
         { dia: "04/09 - qui", descricao: "Estacionar em local proibido", status: "Aprovada" },
         { dia: "04/09 - qui", descricao: "Estacionar em local proibido", status: "Aprovada" },
@@ -56,7 +58,7 @@ export function Home({ onNavigate }) {
                     </div>
 
                     <div className={styles.buttons}>
-                        <button className={styles.btnAmarelo} onClick={() => onNavigate?.('upload')}>ENVIAR NOVA OCORRÊNCIA</button>
+                        <button className={styles.btnAmarelo} onClick={() => navigate('/upload')}>ENVIAR NOVA OCORRÊNCIA</button>
                         <button className={styles.btnCinza}>Consultar ocorrências</button>
                     </div>
 

@@ -1,8 +1,10 @@
 import styles from './Upload.module.css';
 import logo from '../assets/dsin.svg';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export function Upload({ onBack, onNavigate }) {
+export function Upload() {
+    const navigate = useNavigate();
     const fileRef = useRef(null);
 
     function handleClick() {
@@ -45,7 +47,7 @@ export function Upload({ onBack, onNavigate }) {
 
                 <div className={styles.bottomText}>
                     <p>Não tem a imagem ou prefere preencher manualmente?</p>
-                    <button className={styles.fillBtn} onClick={() => onNavigate?.('form')}>Preencher</button>
+                    <button className={styles.fillBtn} onClick={() => navigate('/form')}>Preencher</button>
                 </div>
             </main>
         </div>
