@@ -64,6 +64,12 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.dragOver {
+    border: 2px dashed rgba(0, 0, 0, 0.18);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .card h2 {
@@ -88,11 +94,12 @@
 .uploadBtn {
     background-color: #f9b933;
     border: none;
-    padding: 12px 28px;
-    border-radius: 28px;
+    padding: 14px 28px;
     font-weight: 700;
+    border-radius: 12px;
     cursor: pointer;
-    color: #111;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
     margin-top: 8px;
 }
 
@@ -108,10 +115,19 @@
 .fillBtn {
     background-color: #f9b933;
     border: none;
-    padding: 8px 18px;
-    border-radius: 6px;
-    font-weight: 700;
+    padding: 14px 28px;
+    font-weight: bold;
+    border-radius: 12px;
     cursor: pointer;
+    min-width: 160px;
+}
+
+.previewImage {
+    max-width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+    border-radius: 6px;
+    margin-bottom: 12px;
 }
 
 @media (max-width: 700px) {
