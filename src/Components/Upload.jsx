@@ -1,17 +1,12 @@
 import styles from './Upload.module.css';
 import logo from '../assets/dsin.svg';
-import { useRef, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDropzone } from 'react-dropzone';
 
 export function Upload() {
     const navigate = useNavigate();
-    const fileRef = useRef(null);
     const [preview, setPreview] = useState(null);
-    const [dragActive, setDragActive] = useState(false);
-
-    function handleClick() {
-        fileRef.current?.click();
-    }
 
     const processFile = useCallback((file) => {
         if (!file) return;
@@ -22,31 +17,23 @@ export function Upload() {
         reader.readAsDataURL(file);
     }, []);
 
-    function handleFile(e) {
-        const file = e.target.files && e.target.files[0];
-        processFile(file);
-    }
+    const onDrop = useCallback((acceptedFiles) => {
+        const file = acceptedFiles[0];
+        if (file) {
+            processFile(file);
+        }
+    }, [processFile]);
 
-    const handleDrop = (e) => {
-        e.preventDefault();
-        setDragActive(false);
-        const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-        processFile(file);
-    };
-
-    const handleDragOver = (e) => {
-        e.preventDefault();
-        setDragActive(true);
-    };
-
-    const handleDragLeave = (e) => {
-        e.preventDefault();
-        setDragActive(false);
-    };
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+        accept: {
+            'image/*': []
+        },
+        maxFiles: 1
+    });
 
     function clearPreview() {
         setPreview(null);
-        if (fileRef.current) fileRef.current.value = null;
     }
 
     return (
@@ -59,10 +46,8 @@ export function Upload() {
 
             <main className={styles.content}>
                 <div
-                    className={`${styles.card} ${dragActive ? styles.dragOver : ''}`}
-                    onDrop={handleDrop}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
+                    className={`${styles.card} ${isDragActive ? styles.dragOver : ''}`}
+                    {...getRootProps()}
                 >
                     {preview ? (
                         <>
@@ -76,15 +61,9 @@ export function Upload() {
                             <h2>Faça upload de uma imagem para digitalizar a ocorrência</h2>
                             <p className={styles.subtitle}>ou arraste uma imagem</p>
 
-                            <input
-                                ref={fileRef}
-                                type="file"
-                                accept="image/*"
-                                className={styles.fileInput}
-                                onChange={handleFile}
-                            />
+                            <input {...getInputProps()} />
 
-                            <button type="button" className={styles.uploadBtn} onClick={handleClick}>
+                            <button type="button" className={styles.uploadBtn}>
                                 Faça upload
                             </button>
                         </>
