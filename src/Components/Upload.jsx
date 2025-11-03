@@ -53,6 +53,7 @@ export function Upload() {
                         <>
                             <img src={preview} alt="Preview" className={styles.previewImage} />
                             <div style={{ display: 'flex', gap: 12 }}>
+                                <button type="button" className={styles.fillBtn} onClick={clearPreview}>Confirmar</button>
                                 <button type="button" className={styles.fillBtn} onClick={clearPreview}>Remover</button>
                             </div>
                         </>
