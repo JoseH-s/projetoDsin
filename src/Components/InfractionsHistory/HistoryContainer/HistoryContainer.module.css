@@ -1,0 +1,14 @@
+.historico {
+    background-color: #9AA2A5;
+    width: 1000px;
+}
+
+.filterHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.filterGroup {
+    display: flex;
+    justify-content: space-between;
+}

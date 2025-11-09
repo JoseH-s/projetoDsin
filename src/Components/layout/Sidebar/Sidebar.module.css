@@ -1,0 +1,20 @@
+.sidebar {
+    background-color: #f9b933;
+    width: 60px;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: block;
+}
+
+.sidebar::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 30%;
+    background: #222;
+}

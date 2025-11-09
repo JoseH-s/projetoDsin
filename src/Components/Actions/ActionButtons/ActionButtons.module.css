@@ -1,0 +1,28 @@
+.buttons {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+    justify-content: center;
+    width: 100%;
+}
+
+.btnAmarelo {
+    background-color: #f9b933;
+    border: none;
+    padding: 14px 28px;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 260px;
+}
+
+.btnCinza {
+    background-color: #9AA2A5;
+    border: none;
+    padding: 14px 28px;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    min-width: 220px;
+}

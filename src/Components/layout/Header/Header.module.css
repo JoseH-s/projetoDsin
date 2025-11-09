@@ -1,0 +1,18 @@
+.headerContent {
+    position: absolute;
+    left: 110px;
+    top: 32px;
+    z-index: 20;
+}
+
+.headerContent img {
+    width: 200px;
+    height: auto;
+    display: block;
+}
+
+.headerContent span {
+    font-size: 10px;
+    text-align: center;
+    color: #333;
+}

@@ -1,0 +1,26 @@
+.status {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.aprovada {
+    background-color: #b8f2b8;
+    color: #1a7e1a;
+}
+
+.rejeitada {
+    background-color: #f2b8b8;
+    color: #8e1a1a;
+}
+
+.pendente {
+    background-color: #fff2b8;
+    color: #8a7a1a;
+}
+
+td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
