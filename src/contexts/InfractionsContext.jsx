@@ -14,11 +14,6 @@ export function InfractionsProvider({ children }) {
             }
         }
         return [
-            { id: 1, dia: "04/09 - qui", descricao: "Estacionar em local proibido", status: "Aprovada" },
-            { id: 2, dia: "04/09 - qui", descricao: "Estacionar em local proibido", status: "Aprovada" },
-            { id: 3, dia: "04/09 - qui", descricao: "Estacionar em local proibido", status: "Pendente" },
-            { id: 4, dia: "04/09 - qui", descricao: "Estacionar em local proibido", status: "Aprovada" },
-            { id: 5, dia: "04/09 - qui", descricao: "Estacionar em local proibido", status: "Pendente" },
         ];
     });
 
