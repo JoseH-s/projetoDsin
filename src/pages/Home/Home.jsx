@@ -8,7 +8,7 @@ import { Header } from '../../Components/layout/Header/Header';
 import { Sidebar } from '../../Components/layout/Sidebar/Sidebar';
 import { UploadModal } from '../../Components/UploadModal/UploadModal';
 import { geminiRoutes } from '../../routes/geminiRoutes';
-import { buildUrl, fetchWithAuth } from '../../routes';
+import { axiosInstance } from '../../routes';
 import { useInfractions } from '../../contexts/InfractionsContext';
 
 export function Home() {
@@ -26,22 +26,14 @@ export function Home() {
         formData.append('file', file);
 
         try {
-            const geminiUrl = buildUrl(geminiRoutes.processarImagemJson.path);
-            console.log('📤 Enviando para:', geminiUrl);
-            console.log('📎 Arquivo:', file.name, file.type, file.size);
+            console.log('📤 Enviando arquivo:', file.name, file.type, file.size);
 
-            const response = await fetchWithAuth(geminiUrl, {
-                method: 'POST',
-                body: formData
-            });
+            const response = await axiosInstance.post(
+                geminiRoutes.processarImagemJson.path,
+                formData
+            );
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error('❌ Resposta do servidor:', errorText);
-                throw new Error(`Erro ${response.status}: ${errorText || 'Falha ao processar'}`);
-            }
-
-            const result = await response.json();
+            const result = response.data;
             console.log('📨 Resposta do Gemini:', result);
 
             const hoje = new Date();

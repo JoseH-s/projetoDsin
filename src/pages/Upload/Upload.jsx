@@ -4,7 +4,8 @@ import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import { geminiRoutes } from '../../routes/geminiRoutes';
-import { API_BASE_URL, buildUrl, fetchWithAuth } from '../../routes';
+import { axiosInstance } from '../../routes';
+import axios from 'axios';
 
 const API_URL = 'http://localhost:3001';
 
@@ -21,16 +22,15 @@ export function Upload() {
 
     const fetchUploadHistory = async () => {
         try {
-            console.log('🔄 Buscando histórico de uploads...');
-            const response = await fetch(`${API_URL}/api/images`);
-            const result = await response.json();
-            console.log('📦 Resposta do servidor:', result);
-            if (result.success) {
-                setUploadHistory(result.data);
-                console.log('✅ Histórico atualizado:', result.data.length, 'imagens');
+            console.log('Buscando histórico de uploads...');
+            const response = await axios.get(`${API_URL}/api/images`);
+            console.log('Resposta do servidor:', response.data);
+            if (response.data.success) {
+                setUploadHistory(response.data.data);
+                console.log('Histórico atualizado:', response.data.data.length, 'imagens');
             }
         } catch (error) {
-            console.error('❌ Erro ao carregar histórico:', error);
+            console.error('SErro ao carregar histórico:', error);
         }
     };
 
@@ -70,52 +70,37 @@ export function Upload() {
             return;
         }
 
-        console.log('📤 Iniciando processamento com Gemini:', selectedFile.name);
-        console.log('📊 Tamanho do arquivo:', selectedFile.size, 'bytes');
-        console.log('📎 Tipo do arquivo:', selectedFile.type);
-
+        console.log('Iniciando processamento com Gemini:', selectedFile.name);
+        console.log('Tamanho do arquivo:', selectedFile.size, 'bytes');
+        console.log('Tipo do arquivo:', selectedFile.type);
         setIsUploading(true);
         const formData = new FormData();
         formData.append('image', selectedFile);
 
         try {
-            const geminiUrl = buildUrl(geminiRoutes.processarImagemJson.path);
-            console.log('🌐 Enviando para Gemini:', geminiUrl);
+            console.log('Enviando para Gemini');
 
-            const response = await fetchWithAuth(geminiUrl, {
-                method: 'POST',
-                headers: {
-                },
-                body: formData
-            });
+            const response = await axiosInstance.post(
+                geminiRoutes.processarImagemJson.path,
+                formData
+            );
 
-            console.log('📡 Status da resposta:', response.status);
-            console.log('📡 Status OK?:', response.ok);
+            console.log('Status da resposta:', response.status);
+            console.log('Resposta do Gemini:', response.data);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error('❌ Erro HTTP:', response.status, errorText);
-                alert(`Erro ao processar imagem: ${response.status}`);
-                setIsUploading(false);
-                return;
-            }
-
-            const result = await response.json();
-            console.log('📨 Resposta do Gemini:', result);
-
-            if (result) {
-                console.log('✅ Processamento realizado com sucesso!');
+            if (response.data) {
+                console.log('Processamento realizado com sucesso!');
                 await fetchUploadHistory();
                 clearPreview();
                 alert('Imagem processada com sucesso pelo Gemini!');
                 navigate('/');
             } else {
-                console.error('❌ Erro na resposta:', result);
+                console.error('Erro na resposta:', response.data);
                 alert('Erro ao processar imagem');
             }
         } catch (error) {
-            console.error('❌ Erro ao fazer upload:', error);
-            console.error('❌ Detalhes do erro:', error.message);
+            console.error('Erro ao fazer upload:', error);
+            console.error('Detalhes do erro:', error.message);
             alert(`Erro ao enviar imagem: ${error.message}`);
         } finally {
             setIsUploading(false);
@@ -126,13 +111,9 @@ export function Upload() {
         if (!confirm('Deseja realmente deletar esta imagem?')) return;
 
         try {
-            const response = await fetch(`${API_URL}/api/images/${filename}`, {
-                method: 'DELETE'
-            });
+            const response = await axios.delete(`${API_URL}/api/images/${filename}`);
 
-            const result = await response.json();
-
-            if (result.success) {
+            if (response.data.success) {
                 await fetchUploadHistory();
             }
         } catch (error) {
