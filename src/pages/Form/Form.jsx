@@ -2,6 +2,8 @@ import styles from './Form.module.css';
 import logo from '../../assets/dsin.svg';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Sidebar } from '../../Components/layout/Sidebar/Sidebar';
+import { Header } from '../../Components/layout/Header/Header';
 
 export function Form() {
     const navigate = useNavigate();
@@ -92,13 +94,13 @@ export function Form() {
     };
     return (
         <div className={styles.container}>
-            <aside className={styles.sidebar} />
-
-            <div className={styles.content}>
-                <div className={styles.headerLogo}>
-                    <img src={logo} alt="DSIN" />
-                </div>
-
+            <div className={styles.header}>
+                < Header />
+            </div>
+            <aside>
+                < Sidebar />
+            </aside>
+            <main className={styles.content}>
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div className={styles.column}>
                         <h4>Dados do agente</h4>
@@ -352,7 +354,7 @@ export function Form() {
                         </div>
                     </div>
                 </form>
-            </div>
+            </main>
         </div>
     );
 }

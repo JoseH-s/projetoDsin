@@ -34,7 +34,6 @@ export function HistoryContainer({ infractions }) {
     };
 
     const parseDate = (dateString) => {
-        // Formato: "04/09 - qui" ou "DD/MM/YYYY"
         const parts = dateString.split(' - ')[0].split('/');
         const day = parts[0];
         const month = parts[1];
@@ -46,19 +45,16 @@ export function HistoryContainer({ infractions }) {
         try {
             const itemDate = parseDate(item.dia || item.data);
 
-            // Filtro de data início
             if (filters.startDate) {
                 const startDate = new Date(filters.startDate);
                 if (itemDate < startDate) return false;
             }
 
-            // Filtro de data fim
             if (filters.endDate) {
                 const endDate = new Date(filters.endDate);
                 if (itemDate > endDate) return false;
             }
 
-            // Filtro de tipo (se existir)
             if (filters.type && item.type) {
                 if (item.type.toLowerCase() !== filters.type.toLowerCase()) return false;
             }

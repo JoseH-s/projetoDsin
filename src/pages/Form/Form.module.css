@@ -6,24 +6,27 @@
     font-family: Helvetica, Arial, sans-serif;
 }
 
-.sidebar {
-    width: 90px;
-    background: #f9b933;
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-}
-
 .content {
     margin-left: 90px;
     padding: 28px 40px;
     width: calc(100% - 90px);
+    gap: 20px;
 }
 
-.headerLogo img {
-    width: 180px;
-    margin-bottom: 12px;
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.sidebar {
+    position: fixed;
+    top: 80px;
+    bottom: 0;
+    left: 0;
+    z-index: 900;
 }
 
 .form {
