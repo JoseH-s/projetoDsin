@@ -3,11 +3,11 @@ import styles from './HistoryLine.module.css';
 import { useNavigate } from 'react-router-dom';
 
 
-export function HistoryLine({ id, dia, data, type, descricao, status }) {
-    const displayDate = dia || data;
+export function HistoryLine({ id, dataHora, type, descricao, status, data }) {
+    const displayDate = new Date(dataHora).toLocaleDateString('pt-BR')
     const navigate = useNavigate();
     const handleClick = () => {
-        navigate('/form', { state: { infraction: { id, dia, descricao, status, ...data } } });
+        navigate('/form', { state: { infraction: { id, dataHora, descricao, status, ...data } } });
     };
 
     return (
@@ -21,8 +21,8 @@ export function HistoryLine({ id, dia, data, type, descricao, status }) {
                     {status}
                 </span>
             </td>
-            <td onClick={handleClick}>
-                <button>+ detalhes</button>
+            <td >
+                <button onClick={handleClick}>+ detalhes</button>
             </td>
         </tr>
     );
@@ -30,9 +30,9 @@ export function HistoryLine({ id, dia, data, type, descricao, status }) {
 
 HistoryLine.propTypes = {
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    dia: PropTypes.string,
-    data: PropTypes.string,
+    dataHora: PropTypes.string.isRequired,
     type: PropTypes.string,
     descricao: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
+    data: PropTypes.string,
 }
