@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from './pages/Login/Login';
 import { Home } from './pages/Home/Home';
@@ -10,7 +10,13 @@ import { ProtectedRoute } from './routes/ProtectedRoute';
 import { InfractionsProvider } from './contexts/InfractionsContext';
 
 export function App() {
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(() => {
+    return localStorage.getItem('isLogged') === 'true';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('isLogged', isLogged);
+  }, [isLogged]);
 
   return (
     <InfractionsProvider>
