@@ -1,5 +1,4 @@
 import styles from './Form.module.css';
-import logo from '../../assets/dsin.svg';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Sidebar } from '../../Components/layout/Sidebar/Sidebar';
@@ -8,7 +7,8 @@ import { Header } from '../../Components/layout/Header/Header';
 export function Form() {
     const navigate = useNavigate();
     const location = useLocation();
-    const infractionData = location.state?.infraction?.dadosCompletos;
+    const completeData = location.state?.infraction?.completeData;
+    const dbData = location.state?.infraction?.dbData || location.state?.infraction;
 
     const [formData, setFormData] = useState({
         matriculaAgente: '',
@@ -41,9 +41,44 @@ export function Form() {
         informacoesAdicionais: '',
     });
 
+    function dbTransformToForm(d) {
+        if (!d) return null;
+
+        return {
+            matriculaAgente: '',
+            nomeAgente: '',
+            orgaoAutuador: '',
+
+            codigoInfracao: d.tipoMulta?.codigo ?? '',
+            descricaoInfracao: d.descricao ?? '',
+            amparoLegal: '',
+            valorMulta: d.tipoMulta?.valor ?? '',
+
+            placa: d.veiculo?.placa ?? '',
+            ufPlaca: d.veiculo?.uf ?? '',
+            marcaModelo: d.veiculo?.modelo ?? '',
+            cor: d.veiculo?.cor ?? '',
+            categoria: '',
+            chassi: '',
+
+            nomeCondutor: d.condutor?.nome ?? '',
+            cpfCondutor: d.condutor?.cpf ?? '',
+            numeroCnh: d.condutor?.numeroCnh ?? '',
+            ufCnh: d.condutor?.ufCnh ?? '',
+
+            dataHora: d.dataHora ? new Date(d.dataHora).toLocaleString() : '',
+            localInfracao: d.endereco ?? '',
+            cidade: '',
+            referencia: '',
+
+            obsAgente: '',
+            informacoesAdicionais: ''
+        };
+    }
+
     useEffect(() => {
-        if (infractionData) {
-            const { cabecalho, dados_veiculo, dados_condutor, infracao, dados_agente } = infractionData;
+        if (completeData) {
+            const { cabecalho, dados_veiculo, dados_condutor, infracao, dados_agente } = completeData;
 
             setFormData({
                 matriculaAgente: dados_agente?.matricula_agente || '',
@@ -72,11 +107,17 @@ export function Form() {
                 cidade: '',
                 referencia: '',
 
-                obsAgente: infracao?.obs_agente || '',
+                obsAgente: 
+                    infracao?.obs_agente || 
+                    infracao?.outras_informacoes ||
+                    '',
                 informacoesAdicionais: infracao?.medida_administrativa || '',
             });
+        } else if (dbData) {
+            const adapted = dbTransformToForm(dbData);
+            if (adapted) setFormData(adapted);
         }
-    }, [infractionData]);
+    }, [completeData, dbData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
