@@ -1,44 +1,96 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { axiosInstance } from '../routes/index';
 
 const InfractionsContext = createContext();
-
 export function InfractionsProvider({ children }) {
-    const [infractions, setInfractions] = useState(() => {
-        const saved = localStorage.getItem('infractions');
-        if (saved) {
-            try {
-                return JSON.parse(saved);
-            } catch (e) {
-                console.error('Erro ao carregar histórico:', e);
-            }
-        }
-        return [
-        ];
-    });
+        const [infractions, setInfractions] = useState([]);
+        const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        localStorage.setItem('infractions', JSON.stringify(infractions));
-    }, [infractions]);
+        async function loadInfractions() {
+            try {
+                const response = await axiosInstance.get('/api/Multa');
+                console.log("DADOS RECEBIDOS:", response.data);
+                setInfractions(response.data);
+            } catch (error) {
+                console.error("Erro ao buscar multas: ", error);
+            } finally {
+                setLoading(false);
+            }
+        }
 
-    const addInfraction = (infraction) => {
-        setInfractions(prev => [infraction, ...prev]);
-    };
+        loadInfractions();
+    }, []);
 
-    const updateInfractionStatus = (id, newStatus) => {
-        setInfractions(prev =>
-            prev.map(inf => inf.id === id ? { ...inf, status: newStatus } : inf)
-        );
-    };
+    async function addInfraction(infraction) {
+    try {
+        const missingFields = [];
+        // if (!infraction.veiculoId) missingFields.push("veiculoId");
+        // if (!infraction.usuarioId) missingFields.push("usuarioId");
+        // if (!infraction.tipoMultaId) missingFields.push("tipoMultaId");
 
-    const clearInfractions = () => {
+        if (missingFields.length > 0) {
+            console.error("Campos obrigatórios ausentes:", missingFields.join(", "));
+            return;
+        }
+
+        const payload = {
+            veiculoId: Number(infraction.veiculoId),
+            usuarioId: Number(infraction.usuarioId),
+            tipoMultaId: Number(infraction.tipoMultaId),
+            dataHora: infraction.dataHora
+                ? new Date(infraction.dataHora).toISOString()
+                : new Date().toISOString(),
+            condutorId: infraction.condutorId
+                ? Number(infraction.condutorId)
+                : null,
+            endereco: infraction.endereco || "",
+            descricao: infraction.descricao || ""
+        };
+
+        console.log("Enviando payload para API:", payload);
+
+        const response = await axiosInstance.post('/api/Multa', payload);
+
+        setInfractions(prev => [response.data, ...prev]);
+
+        console.log("Multa adicionada com sucesso:", response.data);
+    } catch (error) {
+        if (error.response) {
+            console.error(
+                "Erro ao adicionar multa:",
+                "Status:", error.response.status,
+                "Dados:", error.response.data
+            );
+        } else {
+            console.error("Erro ao adicionar multa:", error.message);
+        }
+    }
+}
+
+    async function updateInfractionStatus(id, newStatus) {
+        try {
+            await axiosInstance.patch(`/api/Multa/${id}`, { status: newStatus });
+            setInfractions(prev => 
+                prev.map(inf => 
+                    inf.id === id ? { ...inf, status: newStatus } : inf
+                )
+            );
+        } catch (error) {
+            console.error("Erro ao atualizar status da multa:", error);
+        }
+     
+    }
+
+    function clearInfractions() {
         setInfractions([]);
-        localStorage.removeItem('infractions');
-    };
+    }
 
     return (
         <InfractionsContext.Provider value={{
             infractions,
+            loading,
             addInfraction,
             updateInfractionStatus,
             clearInfractions
