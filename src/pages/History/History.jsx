@@ -5,7 +5,11 @@ import { useInfractions } from '../../contexts/InfractionsContext';
 import styles from './History.module.css';
 
 export function History() {
-    const { infractions } = useInfractions();
+  const { infractions, loading } = useInfractions();
+
+    if (loading) {
+        return <p>Carregando histórico...</p>
+    }
 
     return (
         <div className={styles.container}>
