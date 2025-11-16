@@ -71,6 +71,7 @@ export function UploadModal({ isOpen, onClose, onUpload }) {
                     className={`${styles.uploadArea} ${isDragActive ? styles.dragActive : ''}`}
                     {...getRootProps()}
                 >
+                    
                     {preview ? (
                         <>
                             <img src={preview} alt="Preview" className={styles.previewImage} />
