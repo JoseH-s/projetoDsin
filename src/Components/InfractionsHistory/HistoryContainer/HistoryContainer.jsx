@@ -33,37 +33,27 @@ export function HistoryContainer({ infractions }) {
         });
     };
 
-    const parseDate = (dateString) => {
-        const parts = dateString.split(' - ')[0].split('/');
-        const day = parts[0];
-        const month = parts[1];
-        const year = parts[2] || new Date().getFullYear();
-        return new Date(`${year}-${month}-${day}`);
-    };
-
     const filteredInfractions = infractions.filter(item => {
-        try {
-            const itemDate = parseDate(item.dia || item.data);
+            const itemDate = new Date(item.dataHora);
 
             if (filters.startDate) {
-                const startDate = new Date(filters.startDate);
-                if (itemDate < startDate) return false;
+                if (itemDate < new Date(filters.startDate)) return false;
             }
 
             if (filters.endDate) {
                 const endDate = new Date(filters.endDate);
+                endDate.setHours(23, 59, 59);
                 if (itemDate > endDate) return false;
             }
 
-            if (filters.type && item.type) {
-                if (item.type.toLowerCase() !== filters.type.toLowerCase()) return false;
+            if (filters.type) {
+                const itemType = item.tipoMulta?.nome ?? "";
+                if (itemType.toLowerCase() !== filters.type.toLowerCase()) {
+                    return false;
+                }
             }
 
             return true;
-        } catch (e) {
-            console.error('Erro ao filtrar:', e);
-            return true;
-        }
     });
 
     return (
@@ -128,7 +118,7 @@ export function HistoryContainer({ infractions }) {
                 <tbody>
                     {filteredInfractions.length === 0 ? (
                         <tr>
-                            <td colSpan="5" style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
+                            <td colSpan="6" style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
                                 Nenhuma ocorrência encontrada
                             </td>
                         </tr>
@@ -137,10 +127,10 @@ export function HistoryContainer({ infractions }) {
                             <HistoryLine
                                 key={item.id}
                                 id={item.id}
-                                dia={item.dia || item.data}
+                                dataHora={item.dataHora}
                                 descricao={item.descricao}
-                                status={item.status}
-                                type={item.type}
+                                status={item.status ?? "indefinido"}
+                                type={item.tipoMulta?.nome ?? "Sem tipo"}
                                 data={item}
                             />
                         ))
