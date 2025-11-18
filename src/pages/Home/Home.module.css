@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    background-color: #e6e8e6;
+    min-height: 100vh;
+    font-family: Helvetica, sans-serif;
+    position: relative;
+    width: 100%;
+}
+
+.content {
+    flex: 1;
+    padding: 150px 40px 40px 40px;
+    margin-left: 90px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 20px;
+    align-items: start;
+    align-content: start;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 820px;
+    width: 100%;
+}
+
