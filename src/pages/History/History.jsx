@@ -13,16 +13,13 @@ export function History() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <Header />
-            </div>
-            <div className={styles.sidebar}>
-                <Sidebar />
-            </div>
+            <Header />
+            <Sidebar />
+
             <main className={styles.content}>
-                <h3>HISTÓRICO DE OCORRÊNCIAS</h3>
+                <h1 className={styles.title}>HISTÓRICO DE OCORRÊNCIAS</h1>
                 <HistoryContainer infractions={infractions} />
             </main>
         </div>
-    )
+    );
 }
