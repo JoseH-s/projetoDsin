@@ -41,33 +41,33 @@ export function Form() {
         informacoesAdicionais: '',
     });
 
-    function dbTransformToForm(d) {
-        if (!d) return null;
+    function transformDbDataToForm(dbData) {
+        if (!dbData) return null;
 
         return {
             matriculaAgente: '',
             nomeAgente: '',
             orgaoAutuador: '',
 
-            codigoInfracao: d.tipoMulta?.codigo ?? '',
-            descricaoInfracao: d.descricao ?? '',
+            codigoInfracao: dbData.tipoMulta?.codigo ?? '',
+            descricaoInfracao: dbData.descricao ?? '',
             amparoLegal: '',
-            valorMulta: d.tipoMulta?.valor ?? '',
+            valorMulta: dbData.tipoMulta?.valor ?? '',
 
-            placa: d.veiculo?.placa ?? '',
-            ufPlaca: d.veiculo?.uf ?? '',
-            marcaModelo: d.veiculo?.modelo ?? '',
-            cor: d.veiculo?.cor ?? '',
+            placa: dbData.veiculo?.placa ?? '',
+            ufPlaca: dbData.veiculo?.uf ?? '',
+            marcaModelo: dbData.veiculo?.modelo ?? '',
+            cor: dbData.veiculo?.cor ?? '',
             categoria: '',
             chassi: '',
 
-            nomeCondutor: d.condutor?.nome ?? '',
-            cpfCondutor: d.condutor?.cpf ?? '',
-            numeroCnh: d.condutor?.numeroCnh ?? '',
-            ufCnh: d.condutor?.ufCnh ?? '',
+            nomeCondutor: dbData.condutor?.nome ?? '',
+            cpfCondutor: dbData.condutor?.cpf ?? '',
+            numeroCnh: dbData.condutor?.numeroCnh ?? '',
+            ufCnh: dbData.condutor?.ufCnh ?? '',
 
-            dataHora: d.dataHora ? new Date(d.dataHora).toLocaleString() : '',
-            localInfracao: d.endereco ?? '',
+            dataHora: dbData.dataHora ? new Date(dbData.dataHora).toLocaleString() : '',
+            localInfracao: dbData.endereco ?? '',
             cidade: '',
             referencia: '',
 
@@ -114,8 +114,8 @@ export function Form() {
                 informacoesAdicionais: infracao?.medida_administrativa || '',
             });
         } else if (dbData) {
-            const adapted = dbTransformToForm(dbData);
-            if (adapted) setFormData(adapted);
+            const adaptedFormData = transformDbDataToForm(dbData);
+            if (adaptedFormData) setFormData(adaptedFormData);
         }
     }, [completeData, dbData]);
 
