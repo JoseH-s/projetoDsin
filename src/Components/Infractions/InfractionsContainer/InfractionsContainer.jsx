@@ -16,7 +16,7 @@ export function InfractionsContainer({ infractions }) {
                 </thead>
                 <tbody>
                     {[...infractions].reverse().map((item, index) => {
-                        const dataFormatada = item.dataHora
+                        const formattedDate = item.dataHora
                             ? new Date(item.dataHora).toLocaleDateString('pt-BR', {
                                 day: '2-digit',
                                 month: '2-digit',
@@ -28,7 +28,7 @@ export function InfractionsContainer({ infractions }) {
                             <InfractionLine
                                 key={item.id || index}
                                 id={item.id || index}
-                                dia={dataFormatada}
+                                dia={formattedDate}
                                 descricao={item.descricao}
                                 status={item.status}
                                 data={item}

@@ -11,14 +11,14 @@ export function HistoryContainer({ infractions }) {
         type: ''
     });
 
-    const typesInfractions = [
+    const infractionTypes = [
         "Leve",
         "Média",
         "Grave",
         "Gravíssima"
     ];
 
-    const filterChange = (field, value) => {
+    const handleFilterChange = (field, value) => {
         setFilters(prev => ({
             ...prev,
             [field]: value
@@ -64,7 +64,7 @@ export function HistoryContainer({ infractions }) {
                     <input
                         type="date"
                         value={filters.startDate}
-                        onChange={(e) => filterChange('startDate', e.target.value)}
+                        onChange={(e) => handleFilterChange('startDate', e.target.value)}
                         className={styles.dateInput}
                     />
                 </div>
@@ -74,7 +74,7 @@ export function HistoryContainer({ infractions }) {
                     <input
                         type="date"
                         value={filters.endDate}
-                        onChange={(e) => filterChange('endDate', e.target.value)}
+                        onChange={(e) => handleFilterChange('endDate', e.target.value)}
                         className={styles.dateInput}
                     />
                 </div>
@@ -83,11 +83,11 @@ export function HistoryContainer({ infractions }) {
                     <label>Tipo:</label>
                     <select
                         value={filters.type}
-                        onChange={(e) => filterChange('type', e.target.value)}
+                        onChange={(e) => handleFilterChange('type', e.target.value)}
                         className={styles.typeSelect}
                     >
                         <option value="">Todos os tipos</option>
-                        {typesInfractions.map((type, index) => (
+                        {infractionTypes.map((type, index) => (
                             <option key={index} value={type}>
                                 {type}
                             </option>

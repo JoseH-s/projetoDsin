@@ -1,29 +1,35 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
+import { parse, isValid } from 'date-fns';
+import { geminiRoutes } from '../../routes/geminiRoutes';
+import { axiosInstance } from '../../routes';
 import styles from './UploadModal.module.css';
 
-export function UploadModal({ isOpen, onClose, onUpload }) {
+export function UploadModal({ isOpen, onClose, onSuccess }) {
     const [preview, setPreview] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
 
-    const processFile = useCallback((file) => {
+    const processFile = (file) => {
         if (!file) return;
+
         setSelectedFile(file);
+
         const reader = new FileReader();
         reader.onload = (e) => {
             setPreview(e.target.result);
         };
-        reader.readAsDataURL(file);
-    }, []);
 
-    const onDrop = useCallback((acceptedFiles) => {
+        reader.readAsDataURL(file);
+    };
+
+    const onDrop = (acceptedFiles) => {
         const file = acceptedFiles[0];
         if (file) {
             processFile(file);
         }
-    }, [processFile]);
+    };
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
@@ -38,17 +44,52 @@ export function UploadModal({ isOpen, onClose, onUpload }) {
         setSelectedFile(null);
     };
 
+    const processDate = (dateString) => {
+        if (!dateString) return null;
+
+        const formats = ['dd/MM/yyyy HH:mm:ss', 'dd/MM/yyyy HH:mm', 'dd/MM/yyyy'];
+
+        for (const format of formats) {
+            const parsedDate = parse(dateString, format, new Date());
+            if (isValid(parsedDate)) {
+                return parsedDate.toISOString();
+            }
+        }
+
+        return null;
+    };
+
     const handleConfirm = async () => {
         if (!selectedFile) return;
 
         setIsUploading(true);
         try {
-            await onUpload(selectedFile);
+            alert('Enviando...');
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            const response = await axiosInstance.post(
+                geminiRoutes.processarImagemJson.path,
+                formData
+            );
+
+            const result = response.data;
+            const dateExtracted = result?.cabecalho?.data_hora_infracao;
+            const processedDate = processDate(dateExtracted);
+
+            onSuccess({
+                id: Date.now(),
+                descricao: result?.infracao?.descricao_infracao || "Nova ocorrência processada",
+                dataHora: processedDate,
+            });
+
+            alert('Enviada com sucesso!');
+
             clearPreview();
             onClose();
-        } catch (error) {
-            console.error('Erro no upload:', error);
-        } finally {
+        } catch {
+            alert('Erro ao processar a imagem');
+        }
+        finally {
             setIsUploading(false);
         }
     };
@@ -131,5 +172,5 @@ export function UploadModal({ isOpen, onClose, onUpload }) {
 UploadModal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    onUpload: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func.isRequired,
 };
