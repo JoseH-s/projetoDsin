@@ -4,12 +4,17 @@ import { useDropzone } from 'react-dropzone';
 import { parse, isValid } from 'date-fns';
 import { geminiRoutes } from '../../routes/geminiRoutes';
 import { axiosInstance } from '../../routes';
+import { useNavigate } from 'react-router-dom';
 import styles from './UploadModal.module.css';
 
 export function UploadModal({ isOpen, onClose, onSuccess }) {
     const [preview, setPreview] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate('/form');
+    };
 
     const processFile = (file) => {
         if (!file) return;
@@ -156,11 +161,7 @@ export function UploadModal({ isOpen, onClose, onSuccess }) {
                     <p>Não tem a imagem ou prefere preencher manualmente?</p>
                     <button
                         className={styles.btnFill}
-                        onClick={() => {
-                            handleClose();
-                            window.location.href = '/form';
-                        }}
-                    >
+                        onClick={handleClick}>
                         Preencher Formulário
                     </button>
                 </div>
