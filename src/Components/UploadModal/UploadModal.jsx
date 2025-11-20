@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
-import { parse, isValid } from 'date-fns';
 import { geminiRoutes } from '../../routes/geminiRoutes';
 import { axiosInstance } from '../../routes';
 import { useNavigate } from 'react-router-dom';
 import styles from './UploadModal.module.css';
+import { processDate } from "../../services/dateService";
 
 export function UploadModal({ isOpen, onClose, onSuccess }) {
     const [preview, setPreview] = useState(null);
@@ -49,20 +49,20 @@ export function UploadModal({ isOpen, onClose, onSuccess }) {
         setSelectedFile(null);
     };
 
-    const processDate = (dateString) => {
-        if (!dateString) return null;
+    // const processDate = (dateString) => {
+    //     if (!dateString) return null;
 
-        const formats = ['dd/MM/yyyy HH:mm:ss', 'dd/MM/yyyy HH:mm', 'dd/MM/yyyy'];
+    //     const formats = ['dd/MM/yyyy HH:mm:ss', 'dd/MM/yyyy HH:mm', 'dd/MM/yyyy'];
 
-        for (const format of formats) {
-            const parsedDate = parse(dateString, format, new Date());
-            if (isValid(parsedDate)) {
-                return parsedDate.toISOString();
-            }
-        }
+    //     for (const format of formats) {
+    //         const parsedDate = parse(dateString, format, new Date());
+    //         if (isValid(parsedDate)) {
+    //             return parsedDate.toISOString();
+    //         }
+    //     }
 
-        return null;
-    };
+    //     return null;
+    // };
 
     const handleConfirm = async () => {
         if (!selectedFile) return;
