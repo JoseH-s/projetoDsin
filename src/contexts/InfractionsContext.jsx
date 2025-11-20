@@ -26,47 +26,14 @@ export function InfractionsProvider({ children }) {
     async function addInfraction(infraction) {
     try {
         const missingFields = [];
-        // if (!infraction.veiculoId) missingFields.push("veiculoId");
-        // if (!infraction.usuarioId) missingFields.push("usuarioId");
-        // if (!infraction.tipoMultaId) missingFields.push("tipoMultaId");
 
         if (missingFields.length > 0) {
             console.error("Campos obrigatórios ausentes:", missingFields.join(", "));
             return;
         }
 
-        const processDate = (dateValue) => {
-            if (!dateValue) {
-                console.warn('⚠️ Atenção: Data não fornecida para a infração. Usando data atual como fallback.');
-                return new Date().toISOString();
-            }
-
-            if (typeof dateValue === 'string' && dateValue.includes('T')) {
-                const testDate = new Date(dateValue);
-                if (!isNaN(testDate.getTime())) {
-                    return dateValue;
-                }
-            }
-
-            const dateObj = new Date(dateValue);
-            if (isNaN(dateObj.getTime())) {
-                console.error('❌ Data inválida recebida:', dateValue);
-                console.warn('⚠️ Usando data atual como fallback devido a data inválida.');
-                return new Date().toISOString();
-            }
-
-            return dateObj.toISOString();
-        };
-
         const payload = {
-            veiculoId: Number(infraction.veiculoId),
-            usuarioId: Number(infraction.usuarioId),
-            tipoMultaId: Number(infraction.tipoMultaId),
-            dataHora: processDate(infraction.dataHora),
-            condutorId: infraction.condutorId
-                ? Number(infraction.condutorId)
-                : null,
-            endereco: infraction.endereco || "",
+            dataHora: infraction.dataHora,
             descricao: infraction.descricao || ""
         };
 

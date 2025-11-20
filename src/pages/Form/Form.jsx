@@ -1,123 +1,19 @@
 import styles from './Form.module.css';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useNavigate} from 'react-router-dom';
+import { useState} from 'react';
 import { Sidebar } from '../../Components/layout/Sidebar/Sidebar';
 import { Header } from '../../Components/layout/Header/Header';
+import { useInfractions } from '../../contexts/InfractionsContext';
+import { processDate } from '../../services/dateService';
 
 export function Form() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const completeData = location.state?.infraction?.completeData;
-    const dbData = location.state?.infraction?.dbData || location.state?.infraction;
+    const { addInfraction } = useInfractions();
 
     const [formData, setFormData] = useState({
-        matriculaAgente: '',
-        nomeAgente: '',
-        orgaoAutuador: '',
-
-        codigoInfracao: '',
-        descricaoInfracao: '',
-        amparoLegal: '',
-        valorMulta: '',
-
-        placa: '',
-        ufPlaca: '',
-        marcaModelo: '',
-        cor: '',
-        categoria: '',
-        chassi: '',
-
-        nomeCondutor: '',
-        cpfCondutor: '',
-        numeroCnh: '',
-        ufCnh: '',
-
         dataHora: '',
-        localInfracao: '',
-        cidade: '',
-        referencia: '',
-
-        obsAgente: '',
-        informacoesAdicionais: '',
+        descricao: '',
     });
-
-    function transformDbDataToForm(dbData) {
-        if (!dbData) return null;
-
-        return {
-            matriculaAgente: '',
-            nomeAgente: '',
-            orgaoAutuador: '',
-
-            codigoInfracao: dbData.tipoMulta?.codigo ?? '',
-            descricaoInfracao: dbData.descricao ?? '',
-            amparoLegal: '',
-            valorMulta: dbData.tipoMulta?.valor ?? '',
-
-            placa: dbData.veiculo?.placa ?? '',
-            ufPlaca: dbData.veiculo?.uf ?? '',
-            marcaModelo: dbData.veiculo?.modelo ?? '',
-            cor: dbData.veiculo?.cor ?? '',
-            categoria: '',
-            chassi: '',
-
-            nomeCondutor: dbData.condutor?.nome ?? '',
-            cpfCondutor: dbData.condutor?.cpf ?? '',
-            numeroCnh: dbData.condutor?.numeroCnh ?? '',
-            ufCnh: dbData.condutor?.ufCnh ?? '',
-
-            dataHora: dbData.dataHora ? new Date(dbData.dataHora).toLocaleString() : '',
-            localInfracao: dbData.endereco ?? '',
-            cidade: '',
-            referencia: '',
-
-            obsAgente: '',
-            informacoesAdicionais: ''
-        };
-    }
-
-    useEffect(() => {
-        if (completeData) {
-            const { cabecalho, dados_veiculo, dados_condutor, infracao, dados_agente } = completeData;
-
-            setFormData({
-                matriculaAgente: dados_agente?.matricula_agente || '',
-                nomeAgente: dados_agente?.nome_agente || '',
-                orgaoAutuador: cabecalho?.orgao_autuador || '',
-
-                codigoInfracao: infracao?.codigo_enquadramento || '',
-                descricaoInfracao: infracao?.descricao_infracao || '',
-                amparoLegal: infracao?.amparo_legal || '',
-                valorMulta: '',
-
-                placa: dados_veiculo?.placa || '',
-                ufPlaca: dados_veiculo?.uf_placa || '',
-                marcaModelo: dados_veiculo?.marca_modelo || '',
-                cor: dados_veiculo?.cor || '',
-                categoria: dados_veiculo?.categoria || '',
-                chassi: dados_veiculo?.chassi || '',
-
-                nomeCondutor: dados_condutor?.nome_condutor || '',
-                cpfCondutor: dados_condutor?.cpf_condutor || '',
-                numeroCnh: dados_condutor?.numero_cnh_pgu || '',
-                ufCnh: dados_condutor?.uf_cnh || '',
-
-                dataHora: cabecalho?.data_hora_infracao || '',
-                localInfracao: cabecalho?.local_infracao || '',
-                cidade: '',
-                referencia: '',
-
-                obsAgente: 
-                    infracao?.obs_agente || 
-                    infracao?.outras_informacoes ||
-                    '',
-                informacoesAdicionais: infracao?.medida_administrativa || '',
-            });
-        } else if (dbData) {
-            const adaptedFormData = transformDbDataToForm(dbData);
-            if (adaptedFormData) setFormData(adaptedFormData);
-        }
-    }, [completeData, dbData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -127,24 +23,32 @@ export function Form() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Dados do formulário:', formData);
-        alert('Ocorrência registrada com sucesso!');
-        navigate('/');
+
+        const payload = {
+            descricao: formData.descricao,
+            dataHora: processDate(formData.dataHora)
+        }
+
+        try {
+            await addInfraction(payload);
+            alert('Ocorrência registrada com sucesso!');
+            navigate('/')
+        } catch {
+            alert("Erro ao registrar a ocorrência!")
+        }
     };
+
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                < Header />
-            </div>
-            <aside>
-                < Sidebar />
-            </aside>
+            <Header />
+            <Sidebar />
             <main className={styles.content}>
                 <form className={styles.form} onSubmit={handleSubmit}>
+                    
                     <div className={styles.column}>
-                        <h4>Dados do agente</h4>
+                        {/* <h4>Dados do agente</h4>
                         <label>
                             Matrícula
                             <input
@@ -174,55 +78,23 @@ export function Form() {
                                 value={formData.orgaoAutuador}
                                 onChange={handleChange}
                             />
-                        </label>
+                        </label> */}
 
                         <h4>Infração cometida *</h4>
                         <label>
-                            Código da infração
-                            <input
-                                type="text"
-                                name="codigoInfracao"
-                                className={styles.input}
-                                value={formData.codigoInfracao}
-                                onChange={handleChange}
-                                required
-                            />
-                        </label>
-                        <label>
                             Descrição da infração
-                            <textarea
-                                name="descricaoInfracao"
-                                className={styles.textarea}
-                                value={formData.descricaoInfracao}
-                                onChange={handleChange}
-                                required
-                                rows="3"
-                            ></textarea>
-                        </label>
-                        <label>
-                            Amparo Legal
                             <input
                                 type="text"
-                                name="amparoLegal"
+                                name="descricao"
                                 className={styles.input}
-                                value={formData.amparoLegal}
+                                value={formData.descricao}
                                 onChange={handleChange}
-                            />
-                        </label>
-                        <label>
-                            Valor da multa
-                            <input
-                                type="text"
-                                name="valorMulta"
-                                className={styles.input}
-                                value={formData.valorMulta}
-                                onChange={handleChange}
-                            />
+                            ></input>
                         </label>
                     </div>
 
                     <div className={styles.column}>
-                        <h4>Identificação do veículo *</h4>
+                        {/* <h4>Identificação do veículo *</h4>
                         <label>
                             Placa
                             <input
@@ -264,9 +136,9 @@ export function Form() {
                                 value={formData.cor}
                                 onChange={handleChange}
                             />
-                        </label>
+                        </label> */}
 
-                        <h4>Identificação do condutor</h4>
+                        {/* <h4>Identificação do condutor</h4>
                         <label>
                             Nome
                             <input
@@ -274,26 +146,6 @@ export function Form() {
                                 name="nomeCondutor"
                                 className={styles.input}
                                 value={formData.nomeCondutor}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <label>
-                            CPF
-                            <input
-                                type="text"
-                                name="cpfCondutor"
-                                className={styles.input}
-                                value={formData.cpfCondutor}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <label>
-                            CNH
-                            <input
-                                type="text"
-                                name="numeroCnh"
-                                className={styles.input}
-                                value={formData.numeroCnh}
                                 onChange={handleChange}
                             />
                         </label>
@@ -307,23 +159,13 @@ export function Form() {
                                 onChange={handleChange}
                                 maxLength="2"
                             />
-                        </label>
-                        <label>
-                            Data e hora do registro
-                            <input
-                                type="text"
-                                name="dataHora"
-                                className={styles.input}
-                                value={formData.dataHora}
-                                onChange={handleChange}
-                                placeholder="DD/MM/AAAA HH:MM:SS"
-                            />
-                        </label>
+                        </label> */}
+                        
                     </div>
 
                     <div className={styles.column}>
-                        <h4>Local da infração</h4>
-                        <label>
+                        <h4>Data e local da infração</h4>
+                        {/* <label>
                             Endereço / Local
                             <input
                                 type="text"
@@ -342,20 +184,21 @@ export function Form() {
                                 value={formData.cidade}
                                 onChange={handleChange}
                             />
-                        </label>
+                        </label> */}
                         <label>
-                            Referência
+                            Data e hora do registro
                             <input
                                 type="text"
-                                name="referencia"
+                                name="dataHora"
                                 className={styles.input}
-                                value={formData.referencia}
+                                value={formData.dataHora}
                                 onChange={handleChange}
+                                placeholder="DD/MM/AAAA HH:MM:SS"
                             />
                         </label>
 
+                        {/* <h4>Observações do agente</h4>
                         <label>
-                            Observações do agente
                             <textarea
                                 name="obsAgente"
                                 className={styles.textarea}
@@ -363,18 +206,7 @@ export function Form() {
                                 onChange={handleChange}
                                 rows="4"
                             ></textarea>
-                        </label>
-
-                        <label>
-                            Informações adicionais
-                            <textarea
-                                name="informacoesAdicionais"
-                                className={styles.textarea}
-                                value={formData.informacoesAdicionais}
-                                onChange={handleChange}
-                                rows="3"
-                            ></textarea>
-                        </label>
+                        </label> */}
 
                         <label className={styles.checkboxLabel}>
                             <input type="checkbox" required />

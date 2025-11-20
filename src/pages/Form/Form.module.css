@@ -7,6 +7,7 @@
 }
 
 .content {
+    margin-top: 80px;
     margin-left: 90px;
     padding: 28px 40px;
     width: calc(100% - 90px);
@@ -19,6 +20,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
+    height: 80px;
 }
 
 .sidebar {
