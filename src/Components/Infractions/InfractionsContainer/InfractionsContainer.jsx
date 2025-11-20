@@ -3,6 +3,9 @@ import styles from './InfractionsContainer.module.css';
 import { InfractionLine } from '../InfractionLine/InfractionLine';
 
 export function InfractionsContainer({ infractions }) {
+
+    const limitedInfractions = [...infractions].sort((a, b) => b.id - a.id).slice(0, 10);
+
     return (
         <div className={styles.historico}>
             <h3>HISTÓRICO DE OCORRÊNCIAS</h3>
@@ -15,7 +18,7 @@ export function InfractionsContainer({ infractions }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {[...infractions].reverse().map((item, index) => {
+                    {limitedInfractions.map((item, index) => {
                         const formattedDate = item.dataHora
                             ? new Date(item.dataHora).toLocaleDateString('pt-BR', {
                                 day: '2-digit',
