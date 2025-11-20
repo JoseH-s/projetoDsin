@@ -12,3 +12,16 @@
     display: flex;
     justify-content: space-between;
 }
+
+.tableWrapper {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.tableWrapper table thead {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 2;
+}

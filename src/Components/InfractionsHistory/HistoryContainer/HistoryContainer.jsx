@@ -105,38 +105,41 @@ export function HistoryContainer({ infractions }) {
                 </div>
             </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Data</th>
-                        <th>Tipo</th>
-                        <th>Descrição</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredInfractions.length === 0 ? (
+            <div className={styles.tableWrapper}>
+                <table>
+                    <thead>
                         <tr>
-                            <td colSpan="6" style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
-                                Nenhuma ocorrência encontrada
-                            </td>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Descrição</th>
+                            <th>Status</th>
                         </tr>
-                    ) : (
-                        [...filteredInfractions].reverse().map((item) => (
-                            <HistoryLine
-                                key={item.id}
-                                id={item.id}
-                                dataHora={item.dataHora}
-                                descricao={item.descricao}
-                                status={item.status ?? "indefinido"}
-                                type={item.tipoMulta?.nome ?? "Sem tipo"}
-                                data={item}
-                            />
-                        ))
-                    )}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {filteredInfractions.length === 0 ? (
+                            <tr>
+                                <td colSpan="6" style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
+                                    Nenhuma ocorrência encontrada
+                                </td>
+                            </tr>
+                        ) : (
+                            [...filteredInfractions].reverse().map((item) => (
+                                <HistoryLine
+                                    key={item.id}
+                                    id={item.id}
+                                    dataHora={item.dataHora}
+                                    descricao={item.descricao}
+                                    status={item.status ?? "indefinido"}
+                                    type={item.tipoMulta?.nome ?? "Sem tipo"}
+                                    data={item}
+                                />
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
     )
 }
