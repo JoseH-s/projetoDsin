@@ -1,9 +1,8 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from './pages/Login/Login';
 import { Home } from './pages/Home/Home';
-import { Upload } from './pages/Upload/Upload';
 import { History } from './pages/History/History';
 import { Form } from './pages/Form/Form';
 import { ProtectedRoute } from './routes/ProtectedRoute';
@@ -11,12 +10,7 @@ import { InfractionsProvider } from './contexts/InfractionsContext';
 
 export function App() {
   const [isLogged, setIsLogged] = useState(false);
-
-  const handleLogout = () => {
-    setIsLogged(false);
-    localStorage.removeItem('isLogged');
-  };
-
+  
   return (
     <InfractionsProvider>
       <BrowserRouter>
@@ -29,14 +23,6 @@ export function App() {
               element={
                 <ProtectedRoute isAuthenticated={isLogged}>
                   <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/upload"
-              element={
-                <ProtectedRoute isAuthenticated={isLogged}>
-                  <Upload />
                 </ProtectedRoute>
               }
             />
