@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import styles from './InfractionLine.module.css';
 
 
-export function InfractionLine({ dia, descricao, status, id, data }) {
+export function InfractionLine({ dia, descricao, status, data }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/form', { 
+        navigate('/details', { 
             state: { 
                 infraction: { 
-                    dbData: {id, dia, descricao, status, ...data } 
+                    dbData: { dia, descricao, status, ...data } 
                 } 
             } 
         });
