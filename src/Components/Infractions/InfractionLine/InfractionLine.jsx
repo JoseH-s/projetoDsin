@@ -1,30 +1,14 @@
 import PropTypes from "prop-types";
 import { useNavigate } from 'react-router-dom';
 import styles from './InfractionLine.module.css';
-
-
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-export function InfractionLine({ dia, descricao, status, id, data }) {
-=======
 export function InfractionLine({ dataHora, data }) {
->>>>>>> Stashed changes
-=======
-export function InfractionLine({ dia, descricao, status, data }) {
->>>>>>> 84af5589e0e85705fe9ff44796b15f22d996cce4
     const navigate = useNavigate();
     const displayDate = new Date(dataHora).toLocaleDateString('pt-BR')
 
     const handleClick = () => {
         navigate('/details', { 
             state: { 
-<<<<<<< Updated upstream
-                infraction: { 
-                    dbData: { dia, descricao, status, ...data } 
-                } 
-=======
                 infraction: data 
->>>>>>> Stashed changes
             } 
         });
     };

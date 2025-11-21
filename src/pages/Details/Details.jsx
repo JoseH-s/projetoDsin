@@ -6,8 +6,6 @@ import styles from "./Details.module.css";
 export function Details() {
     const location = useLocation();
     const infraction = location.state?.infraction;
-
-<<<<<<< HEAD
     const handleGoBack = () => {
             window.history.back();
     };
@@ -25,14 +23,6 @@ export function Details() {
                 </div>
                 <DetailsContainer infraction={infraction} />
             </div>
-            
-=======
-    return (
-        <div className={styles.container}>
-            <Header />
-            <DetailsContainer infraction={infraction} />
->>>>>>> 84af5589e0e85705fe9ff44796b15f22d996cce4
         </div>
-
     )
 }
