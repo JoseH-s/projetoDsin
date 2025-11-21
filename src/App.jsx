@@ -5,6 +5,7 @@ import { Login } from './pages/Login/Login';
 import { Home } from './pages/Home/Home';
 import { History } from './pages/History/History';
 import { Form } from './pages/Form/Form';
+import { Details } from './pages/Details/Details';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { InfractionsProvider } from './contexts/InfractionsContext';
 
@@ -39,6 +40,14 @@ export function App() {
               element={
                 <ProtectedRoute isAuthenticated={isLogged}>
                   <Form />
+                </ProtectedRoute>
+              }
+            />
+            <Route 
+              path="/details"
+              element={
+                <ProtectedRoute isAuthenticated={isLogged}>
+                  <Details />
                 </ProtectedRoute>
               }
             />

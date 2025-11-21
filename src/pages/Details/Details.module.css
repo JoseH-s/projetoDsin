@@ -1,0 +1,13 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    min-height: 100vh;
+    background-color: #e6e8e6;
+    font-family: Helvetica, sans-serif;
+    padding-top: 80px;
+    padding-left: 90px;
+    position: relative;
+}
