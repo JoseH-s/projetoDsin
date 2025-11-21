@@ -49,21 +49,6 @@ export function UploadModal({ isOpen, onClose, onSuccess }) {
         setSelectedFile(null);
     };
 
-    // const processDate = (dateString) => {
-    //     if (!dateString) return null;
-
-    //     const formats = ['dd/MM/yyyy HH:mm:ss', 'dd/MM/yyyy HH:mm', 'dd/MM/yyyy'];
-
-    //     for (const format of formats) {
-    //         const parsedDate = parse(dateString, format, new Date());
-    //         if (isValid(parsedDate)) {
-    //             return parsedDate.toISOString();
-    //         }
-    //     }
-
-    //     return null;
-    // };
-
     const handleConfirm = async () => {
         if (!selectedFile) return;
 

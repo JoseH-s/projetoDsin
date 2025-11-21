@@ -58,62 +58,54 @@ export function HistoryContainer({ infractions }) {
 
     return (
         <div className={styles.historico}>
-            <div className={styles.filterHeader}>
-                <div className={styles.filterGroup}>
-                    <label>De:</label>
-                    <input
-                        type="date"
-                        value={filters.startDate}
-                        onChange={(e) => handleFilterChange('startDate', e.target.value)}
-                        className={styles.dateInput}
-                    />
-                </div>
-
-                <div className={styles.filterGroup}>
-                    <label>Até:</label>
-                    <input
-                        type="date"
-                        value={filters.endDate}
-                        onChange={(e) => handleFilterChange('endDate', e.target.value)}
-                        className={styles.dateInput}
-                    />
-                </div>
-
-                <div className={styles.filterGroup}>
-                    <label>Tipo:</label>
-                    <select
-                        value={filters.type}
-                        onChange={(e) => handleFilterChange('type', e.target.value)}
-                        className={styles.typeSelect}
-                    >
-                        <option value="">Todos os tipos</option>
-                        {infractionTypes.map((type, index) => (
-                            <option key={index} value={type}>
-                                {type}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                <div className={styles.buttonGroup}>
-                    <button
-                        onClick={clearFilters}
-                        className={styles.clearButton}
-                    >
-                        Limpar
-                    </button>
-                </div>
-            </div>
-
             <div className={styles.tableWrapper}>
-                <table>
+                <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Data</th>
-                            <th>Tipo</th>
-                            <th>Descrição</th>
-                            <th>Status</th>
+                            <th>
+                                <label>DE:</label>
+                                <input
+                                    type="date"
+                                    value={filters.startDate}
+                                    onChange={(e) => handleFilterChange('startDate', e.target.value)}
+                                    className={styles.dateInput}
+                                />
+                            </th>
+
+                            <th>
+                                
+                                    <label>ATÉ:</label>
+                                    <input
+                                        type="date"
+                                        value={filters.endDate}
+                                        onChange={(e) => handleFilterChange('endDate', e.target.value)}
+                                        className={styles.dateInput}
+                                    />
+                                
+                            </th>
+                            <th>
+                                    <label>TIPO:</label>
+                                    <select
+                                        value={filters.type}
+                                        onChange={(e) => handleFilterChange('type', e.target.value)}
+                                        className={styles.typeSelect}
+                                    >
+                                        <option value="">Todos os tipos</option>
+                                        {infractionTypes.map((type, index) => (
+                                            <option key={index} value={type}>
+                                                {type}
+                                            </option>
+                                        ))}
+                                    </select>
+                            </th>
+                            <th>
+                                    <button
+                                        onClick={clearFilters}
+                                        className={styles.clearButton}
+                                    >
+                                        Limpar
+                                    </button>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>

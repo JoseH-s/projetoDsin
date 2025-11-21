@@ -2,12 +2,8 @@
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
+    width: 450px;
 
-.historico {
-    grid-column: 2;
-    min-height: 500px;
 }
 
 .historico h3 {
@@ -22,13 +18,11 @@ table {
     font-size: 14px;
 }
 
-th {
-    text-align: left;
-    border-bottom: 1px solid #ccc;
-    padding: 8px;
+table thead tr {
+    padding: 10px 20px 10px 20px;
 }
 
 td {
-    padding: 8px;
+    padding: 6px;
     border-bottom: 1px solid #eee;
 }

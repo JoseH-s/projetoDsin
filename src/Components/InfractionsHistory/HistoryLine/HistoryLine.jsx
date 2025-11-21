@@ -3,36 +3,50 @@ import styles from './HistoryLine.module.css';
 import { useNavigate } from 'react-router-dom';
 
 
-export function HistoryLine({ id, dataHora, type, descricao, status, data }) {
-    const displayDate = new Date(dataHora).toLocaleDateString('pt-BR')
+export function HistoryLine({ data, dataHora }) {
     const navigate = useNavigate();
+    const displayDate = new Date(dataHora).toLocaleDateString('pt-BR')
+
     const handleClick = () => {
-        navigate('/form', { state: { infraction: { id, dataHora, descricao, status, ...data } } });
+        navigate('/form', {
+             state: { 
+                infraction: data  
+            } 
+        });
     };
 
+    const statusClass = data.status
+        ? styles[data.status.toLowerCase()] || ""
+        : styles["pendente"]
+
     return (
-        <tr>
-            <td>{id}</td>
+        <tr className={styles.row}>
+            <td>{data.id}</td>
             <td>{displayDate}</td>
-            <td>{type}</td>
-            <td>{descricao}</td>
+            <td>{data.tipoMulta?.nome}</td>
+            <td>{data.descricao}</td>
+
             <td>
-                <span className={`${styles.status} ${styles[status.toLowerCase()]}`}>
-                    {status}
+                <span className={`${styles.status} ${statusClass}`}>
+                    {data.status ?? "pendente"}
                 </span>
             </td>
+
             <td >
-                <button onClick={handleClick}>+ detalhes</button>
+                <button className={styles.detailsButton} onClick={handleClick}>+ DETALHES</button>
             </td>
         </tr>
     );
 }
 
 HistoryLine.propTypes = {
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    dataHora: PropTypes.string.isRequired,
-    type: PropTypes.string,
-    descricao: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
-    data: PropTypes.string,
-}
+    data: PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        dataHora: PropTypes.string.isRequired,
+        descricao: PropTypes.string.isRequired,
+        status: PropTypes.string.isRequired,
+        tipoMulta: PropTypes.shape({
+            nome: PropTypes.string
+        })
+    }).isRequired
+};

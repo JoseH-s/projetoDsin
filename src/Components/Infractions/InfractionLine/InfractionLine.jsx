@@ -16,16 +16,18 @@ export function InfractionLine({ dia, descricao, status, id, data }) {
         });
     };
 
-    const safeStatus = status ? status.toLowerCase() : "default";
+    const statusClass = data.status
+            ? styles[data.status.toLowerCase()] || ""
+            : styles["pendente"]
 
     return (
         <tr className={styles.row} onClick={handleClick}>
             <td>{dia}</td>
             <td>{descricao}</td>
             <td>
-                <div className={`${styles.statusIndicator} ${styles[safeStatus]}`}
-                    title={status ?? "Sem status"}>
-                </div>
+                <span className={`${styles.status} ${statusClass}`}>
+                    {data.status ?? "pendente"}
+                </span>
             </td>
         </tr>
     );

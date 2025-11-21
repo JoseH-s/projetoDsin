@@ -2,18 +2,20 @@ import { FaCalendarDay, FaTimes, FaHourglassHalf, FaCheck } from "react-icons/fa
 import { StatCard } from '../StatCard/StatCard';
 import { useInfractions } from '../../../contexts/InfractionsContext';
 import styles from './StatsContainer.module.css';
+import { processDate, isToday } from "../../../services/dateService";
 
 export function StatsContainer() {
     const { infractions } = useInfractions();
 
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
+    const ocorrenciasHojeLista = infractions.filter(item => {
+        const iso = processDate(item.dataHora);
+        if (!iso) return false;
 
-    const ocorrenciasHoje = infractions.filter(item => {
-        const dataItem = new Date(item.dataHora);
-        dataItem.setHours(0, 0, 0, 0);
-        return dataItem.getTime() === hoje.getTime();
-    }).length;
+        const date = new Date(iso);
+        return isToday(date);
+    })
+    
+    const ocorrenciasHoje = ocorrenciasHojeLista.length;
 
     const rejeitadas = infractions.filter(item =>
         item.status?.toLowerCase() === 'rejeitado' ||
@@ -35,7 +37,8 @@ export function StatsContainer() {
         {
             title: "OCORRÊNCIAS DO DIA",
             value: ocorrenciasHoje.toString(),
-            icon: FaCalendarDay
+            icon: FaCalendarDay,
+            items: ocorrenciasHojeLista
         },
         {
             title: "REJEITADAS",
@@ -62,6 +65,7 @@ export function StatsContainer() {
                     title={stat.title}
                     value={stat.value}
                     icon={stat.icon}
+                    items={stat.items}
                 />
             ))}
         </div>
