@@ -44,3 +44,10 @@ tr {
     border-radius: 4px;
     cursor: pointer;
 }
+
+.noInfractions {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+}
+ 

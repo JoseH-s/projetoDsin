@@ -3,8 +3,8 @@ import logo from '../../../assets/dsin.svg';
 
 export function Header() {
     return (
-        <div className={styles.headerContent}>
+        <header className={styles.headerContent} role="banner">
             <img src={logo} alt="DSIN logo" />
-        </div>
-    )
+        </header>
+    );
 }

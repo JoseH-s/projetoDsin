@@ -13,6 +13,10 @@ export function Home() {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { infractions, addInfraction } = useInfractions();
+    
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
 
     const handleUploadClick = () => {
         setIsModalOpen(true);
@@ -20,28 +24,26 @@ export function Home() {
     
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <Header />
-            </div>
-            <aside>
-                < Sidebar />
-            </aside>
+            <Header />
+            <Sidebar />
+
             <main className={styles.content}>
                 <div className={styles.left}>
                     <StatsContainer />
-                    < ActionButtons
+                    <ActionButtons
                         onUpload={handleUploadClick}
                         onHistory={() => navigate('/history')}
                     />
                 </div>
+                
                 <div className={styles.right}>
-                    < InfractionsContainer infractions={infractions} />
+                    <InfractionsContainer infractions={infractions} />
                 </div>
             </main>
 
             <UploadModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={handleCloseModal}
                 onSuccess={addInfraction}
             />
         </div>

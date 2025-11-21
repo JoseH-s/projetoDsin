@@ -5,23 +5,23 @@ import { geminiRoutes } from '../../routes/geminiRoutes';
 import { axiosInstance } from '../../routes';
 import { useNavigate } from 'react-router-dom';
 import styles from './UploadModal.module.css';
-import { processDate } from "../../services/dateService";
+import { uploadToInfraction } from '../../services/infractionMapper';
 
 export function UploadModal({ isOpen, onClose, onSuccess }) {
     const [preview, setPreview] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
     const navigate = useNavigate();
+
     const handleClick = () => {
         navigate('/form');
     };
 
     const processFile = (file) => {
         if (!file) return;
-
-        setSelectedFile(file);
-
+        setSelectedFile(file);  
         const reader = new FileReader();
+
         reader.onload = (e) => {
             setPreview(e.target.result);
         };
@@ -29,12 +29,7 @@ export function UploadModal({ isOpen, onClose, onSuccess }) {
         reader.readAsDataURL(file);
     };
 
-    const onDrop = (acceptedFiles) => {
-        const file = acceptedFiles[0];
-        if (file) {
-            processFile(file);
-        }
-    };
+    const onDrop = (acceptedFiles) => processFile(acceptedFiles[0])
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
@@ -51,10 +46,9 @@ export function UploadModal({ isOpen, onClose, onSuccess }) {
 
     const handleConfirm = async () => {
         if (!selectedFile) return;
-
         setIsUploading(true);
+
         try {
-            alert('Enviando...');
             const formData = new FormData();
             formData.append('file', selectedFile);
             const response = await axiosInstance.post(
@@ -62,20 +56,12 @@ export function UploadModal({ isOpen, onClose, onSuccess }) {
                 formData
             );
 
-            const result = response.data;
-            const dateExtracted = result?.cabecalho?.data_hora_infracao;
-            const processedDate = processDate(dateExtracted);
-
-            onSuccess({
-                id: Date.now(),
-                descricao: result?.infracao?.descricao_infracao || "Nova ocorrência processada",
-                dataHora: processedDate,
-            });
-
-            alert('Enviada com sucesso!');
+            const infraction = uploadToInfraction(response.data);
+            onSuccess(infraction);
 
             clearPreview();
             onClose();
+            alert('Enviada com sucesso!');
         } catch {
             alert('Erro ao processar a imagem');
         }

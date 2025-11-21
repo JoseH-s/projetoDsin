@@ -4,10 +4,10 @@ import styles from './ActionButtons.module.css';
 export function ActionButtons({ onUpload, onHistory}) {
     return (
         <div className={styles.buttons}>
-            <button className={styles.btnAmarelo} onClick={onUpload}>
+            <button type="button" className={styles.btnAmarelo} onClick={onUpload}>
                 ENVIAR NOVA OCORRÊNCIA
             </button>
-            <button className={styles.btnCinza} onClick={onHistory}>
+            <button type="button" className={styles.btnCinza} onClick={onHistory}>
                 Consultar ocorrências
             </button>
         </div>

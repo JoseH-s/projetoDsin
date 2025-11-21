@@ -22,3 +22,13 @@ export function isToday(date) {
     date.getFullYear() === today.getFullYear()
   );
 }
+
+export function formatDisplayDate(isoString, locale = "pt-BR") {
+  if (!isoString) return "-";
+
+  const date = new Date(isoString);
+
+  if (!isValid(date)) return "";
+
+  return date.toLocaleDateString(locale);
+}

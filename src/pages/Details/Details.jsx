@@ -1,13 +1,13 @@
 import { DetailsContainer } from '../../Components/Details/DetailsContainer/DetailsContainer';
 import { Header } from '../../Components/layout/Header/Header';
-import { useLocation } from "react-router-dom";
+import { useInfractionDetails } from '../../hooks/useInfractionDetails';
 import styles from "./Details.module.css";
  
 export function Details() {
-    const location = useLocation();
-    const infraction = location.state?.infraction;
+    const { infraction } = useInfractionDetails();
+
     const handleGoBack = () => {
-            window.history.back();
+        window.history.back();
     };
 
     return (
@@ -21,7 +21,10 @@ export function Details() {
                         Voltar
                     </button>
                 </div>
-                <DetailsContainer infraction={infraction} />
+
+                {infraction && (
+                    <DetailsContainer infraction={infraction} />
+                )}
             </div>
         </div>
     )

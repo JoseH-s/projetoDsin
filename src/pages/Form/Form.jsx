@@ -4,32 +4,38 @@ import { useState} from 'react';
 import { Sidebar } from '../../Components/layout/Sidebar/Sidebar';
 import { Header } from '../../Components/layout/Header/Header';
 import { useInfractions } from '../../contexts/InfractionsContext';
-import { processDate } from '../../services/dateService';
+import { formToInfraction } from '../../services/infractionMapper';
+import { validateInfraction } from '../../services/validateInfractionForm';
 
 export function Form() {
     const navigate = useNavigate();
     const { addInfraction } = useInfractions();
 
-    const [formData, setFormData] = useState({
+    const initialForm = {
         dataHora: '',
         descricao: '',
-    });
+    }
+    const [formData, setFormData] = useState(initialForm);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+    const handleChange = ( { target }) => {
+        const { name, value } = target;
+
+        setFormData(prev => {
+            if (!(name in prev)) return prev;
+            return { ...prev, [name]: value };
+        });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
-        const payload = {
-            descricao: formData.descricao,
-            dataHora: processDate(formData.dataHora)
+        const error = validateInfraction(formData);
+        if (error) {
+            alert(error);
+            return;
         }
+
+        const payload = formToInfraction(formData);
 
         try {
             await addInfraction(payload);

@@ -2,9 +2,8 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './HistoryContainer.module.css';
 import { HistoryLine } from '../HistoryLine/HistoryLine';
-
-
 export function HistoryContainer({ infractions }) {
+
     const [filters, setFilters] = useState({
         startDate: '',
         endDate: '',
@@ -73,45 +72,46 @@ export function HistoryContainer({ infractions }) {
                             </th>
 
                             <th>
-                                
-                                    <label>ATÉ:</label>
-                                    <input
-                                        type="date"
-                                        value={filters.endDate}
-                                        onChange={(e) => handleFilterChange('endDate', e.target.value)}
-                                        className={styles.dateInput}
-                                    />
-                                
+                                <label>ATÉ:</label>
+                                <input
+                                    type="date"
+                                    value={filters.endDate}
+                                    onChange={(e) => handleFilterChange('endDate', e.target.value)}
+                                    className={styles.dateInput}
+                                />    
                             </th>
+
                             <th>
-                                    <label>TIPO:</label>
-                                    <select
-                                        value={filters.type}
-                                        onChange={(e) => handleFilterChange('type', e.target.value)}
-                                        className={styles.typeSelect}
-                                    >
-                                        <option value="">Todos os tipos</option>
-                                        {infractionTypes.map((type, index) => (
-                                            <option key={index} value={type}>
-                                                {type}
-                                            </option>
-                                        ))}
-                                    </select>
+                                <label>TIPO:</label>
+                                <select
+                                    value={filters.type}
+                                    onChange={(e) => handleFilterChange('type', e.target.value)}
+                                    className={styles.typeSelect}
+                                >
+                                    <option value="">Todos os tipos</option>
+                                    {infractionTypes.map((type, index) => (
+                                        <option key={index} value={type}>
+                                            {type}
+                                        </option>
+                                    ))}
+                                </select>
                             </th>
+
                             <th>
-                                    <button
-                                        onClick={clearFilters}
-                                        className={styles.clearButton}
-                                    >
-                                        Limpar
-                                    </button>
+                                <button
+                                    onClick={clearFilters}
+                                    className={styles.clearButton}
+                                >
+                                    Limpar
+                                </button>
                             </th>
                         </tr>
                     </thead>
+
                     <tbody>
                         {filteredInfractions.length === 0 ? (
                             <tr>
-                                <td colSpan="6" style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
+                                <td colSpan="6" className={styles.noInfractions}>
                                     Nenhuma ocorrência encontrada
                                 </td>
                             </tr>
@@ -119,11 +119,6 @@ export function HistoryContainer({ infractions }) {
                             [...filteredInfractions].reverse().map((item) => (
                                 <HistoryLine
                                     key={item.id}
-                                    id={item.id}
-                                    dataHora={item.dataHora}
-                                    descricao={item.descricao}
-                                    status={item.status ?? "indefinido"}
-                                    type={item.tipoMulta?.nome ?? "Sem tipo"}
                                     data={item}
                                 />
                             ))
@@ -131,9 +126,8 @@ export function HistoryContainer({ infractions }) {
                     </tbody>
                 </table>
             </div>
-            
         </div>
-    )
+    );
 }
 
 HistoryContainer.propTypes = {

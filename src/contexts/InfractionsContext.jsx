@@ -56,32 +56,11 @@ export function InfractionsProvider({ children }) {
         }
     }
 }
-
-    async function updateInfractionStatus(id, newStatus) {
-        try {
-            await axiosInstance.patch(`/api/Multa/${id}`, { status: newStatus });
-            setInfractions(prev => 
-                prev.map(inf => 
-                    inf.id === id ? { ...inf, status: newStatus } : inf
-                )
-            );
-        } catch (error) {
-            console.error("Erro ao atualizar status da multa:", error);
-        }
-     
-    }
-
-    function clearInfractions() {
-        setInfractions([]);
-    }
-
     return (
         <InfractionsContext.Provider value={{
             infractions,
             loading,
             addInfraction,
-            updateInfractionStatus,
-            clearInfractions
         }}>
             {children}
         </InfractionsContext.Provider>
