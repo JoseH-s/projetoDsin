@@ -19,19 +19,11 @@ export function InfractionsContainer({ infractions }) {
                 </thead>
                 <tbody>
                     {limitedInfractions.map((item, index) => {
-                        const formattedDate = item.dataHora
-                            ? new Date(item.dataHora).toLocaleDateString('pt-BR', {
-                                day: '2-digit',
-                                month: '2-digit',
-                                year: 'numeric'
-                            })
-                            : item.dia;
-
                         return (
                             <InfractionLine
                                 key={item.id || index}
                                 id={item.id || index}
-                                dia={formattedDate}
+                                dataHora={item.dataHora}
                                 descricao={item.descricao}
                                 status={item.status}
                                 data={item}

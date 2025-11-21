@@ -1,0 +1,48 @@
+.detailsContainer {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid;
+}
+
+.detailTable {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    min-width: 1200px;
+    
+}
+
+.detailTable th,
+.detailTable td {
+    text-align: left;
+    padding: 12px 8px;
+    word-wrap: break-word;
+}
+
+.detailTable tr {
+    background-color: #9AA2A5;
+}
+
+.descricao {
+    width: 200px;
+}
+
+.statusLine {
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.aprovado, .aprovada {
+    background: #00d000;
+}
+
+.rejeitado, .rejeitada {
+    background: #ff2a2a;
+}
+
+.pendente {
+    background: #ffaa00;
+}
