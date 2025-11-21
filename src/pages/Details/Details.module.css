@@ -10,6 +10,7 @@
     padding-top: 80px;
     padding-left: 90px;
     position: relative;
+<<<<<<< HEAD
 }
 
 .content {
@@ -31,4 +32,6 @@
     background-color: #ffaa00;
     border-radius: 5px;
     cursor: pointer;
+=======
+>>>>>>> 84af5589e0e85705fe9ff44796b15f22d996cce4
 }

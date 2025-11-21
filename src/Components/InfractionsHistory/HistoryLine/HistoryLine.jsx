@@ -8,7 +8,7 @@ export function HistoryLine({ data, dataHora }) {
     const displayDate = new Date(dataHora).toLocaleDateString('pt-BR')
 
     const handleClick = () => {
-        navigate('/form', {
+        navigate('/details', {
              state: { 
                 infraction: data  
             } 
