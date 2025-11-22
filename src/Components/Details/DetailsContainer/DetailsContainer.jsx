@@ -1,20 +1,33 @@
 import PropTypes from 'prop-types';
 import  styles  from "./DetailsContainer.module.css";
+import { formatDisplayDate } from '../../../services/dateService';
 
 export function DetailsContainer( { infraction }) { 
 
-    const displayDate = new Date(infraction.dataHora).toLocaleDateString('pt-BR');      
+    const date = formatDisplayDate(infraction.dataHora);
 
     const statusClass = infraction.status
-        ? styles[infraction.status.toLowerCase()] || ""
+        ? styles[infraction.status.toLoweCase()] || ""
         : styles["pendente"]
+
+    const fields = [
+        { key: "descricao" },
+        { key: "modelo" },
+        { key: "cor" },
+        { key: "placa" },
+        { key: "infrator" },
+        { key: "cnh" },
+        { key: "tipo" }
+    ]
+
+    const fallback = "-";
 
     return (
         <div className={styles.detailsContainer}>
             <table className={styles.detailTable}>
                 <thead>
                     <tr>
-                        <th className={styles.data}>DATA</th>
+                        <th className={styles.date}>DATA</th>
                         <th className={styles.descricao}>DESCRICAO</th>
                         <th className={styles.modelo}>MODELO VEICULO</th>
                         <th className={styles.cor}>COR</th>
@@ -25,16 +38,16 @@ export function DetailsContainer( { infraction }) {
                         <th className={styles.status}>STATUS</th>   
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr>
-                        <td>{displayDate}</td>
-                        <td>{infraction.descricao}</td>
-                        <td>Null</td>
-                        <td>Null</td>
-                        <td>Null</td>
-                        <td>Null</td>
-                        <td>Null</td>
-                        <td>Null</td>
+                        <td>{date}</td>
+
+                        {fields.map(field => (
+                            <td key={field.key}>
+                                {infraction[field.key] || fallback}
+                            </td>  
+                        ))}
                         <td>
                             <span className={`${styles.statusLine} ${statusClass}`}>
                                 {infraction.status ?? "pendente"}
@@ -44,8 +57,7 @@ export function DetailsContainer( { infraction }) {
                 </tbody>
             </table>
         </div>
-    )
-
+    );
 }
 
 DetailsContainer.PropTypes = {

@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import { useNavigate } from 'react-router-dom';
 import styles from './InfractionLine.module.css';
-export function InfractionLine({ dataHora, data }) {
+import { formatDisplayDate } from "../../../services/dateService";
+export function InfractionLine({ data }) {
     const navigate = useNavigate();
-    const displayDate = new Date(dataHora).toLocaleDateString('pt-BR')
+    const displayDate = formatDisplayDate(data.dataHora);
 
     const handleClick = () => {
         navigate('/details', { 
@@ -35,6 +36,6 @@ InfractionLine.propTypes = {
         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         dataHora: PropTypes.string.isRequired,
         descricao: PropTypes.string.isRequired,
-        status: PropTypes.string.isRequired,
+        status: PropTypes.string,
     }).isRequired
 }

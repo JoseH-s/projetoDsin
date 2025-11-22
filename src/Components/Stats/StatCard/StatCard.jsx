@@ -10,7 +10,7 @@ export function StatCard({ title, value, icon }) {
             </div>
             <div className={styles.cardBottom}>
                 <h2>{value}</h2>
-                <IconComponent size={24}/>
+                <IconComponent size={24} aria-hidden="true" />
             </div>
         </div>
     )
@@ -18,6 +18,6 @@ export function StatCard({ title, value, icon }) {
 
 StatCard.propTypes = {
     title: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string,PropTypes.number]).isRequired,
     icon: PropTypes.elementType.isRequired,
 };
