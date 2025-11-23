@@ -78,7 +78,7 @@ export function HistoryContainer({ infractions }) {
                                     value={filters.endDate}
                                     onChange={(e) => handleFilterChange('endDate', e.target.value)}
                                     className={styles.dateInput}
-                                />    
+                                />
                             </th>
 
                             <th>
@@ -116,12 +116,14 @@ export function HistoryContainer({ infractions }) {
                                 </td>
                             </tr>
                         ) : (
-                            [...filteredInfractions].reverse().map((item) => (
-                                <HistoryLine
-                                    key={item.id}
-                                    data={item}
-                                />
-                            ))
+                            [...filteredInfractions]
+                                .sort((a, b) => b.id - a.id)
+                                .map((item) => (
+                                    <HistoryLine
+                                        key={item.id}
+                                        data={item}
+                                    />
+                                ))
                         )}
                     </tbody>
                 </table>

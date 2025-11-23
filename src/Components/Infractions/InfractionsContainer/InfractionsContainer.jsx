@@ -5,7 +5,8 @@ import { InfractionLine } from '../InfractionLine/InfractionLine';
 export function InfractionsContainer({ infractions }) {
 
     const sortedInfractions = [...infractions]
-        .sort((a, b) => b.id - a.id);
+        .sort((a, b) => b.id - a.id)
+        .slice(0, 10);
 
     return (
         <div className={styles.historico}>
