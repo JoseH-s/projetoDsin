@@ -18,7 +18,7 @@ export function formToInfraction(formData) {
 export function uploadToInfraction(apiData) {
     const extractedDate = processDate(apiData.cabecalho?.data_hora_infracao);
     const currentDate = new Date().toISOString();
-
+    
     // Se a data extraída for inválida ou muito antiga (antes de 2020), usa a data atual
     const isOldDate = extractedDate && new Date(extractedDate) < new Date('2020-01-01');
     const finalDate = (!extractedDate || isOldDate) ? currentDate : extractedDate;
