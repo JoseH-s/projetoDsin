@@ -1,0 +1,53 @@
+.historico {
+    background-color: #9AA2A5;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.tableWrapper {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 6px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+
+.tableWrapper table thead {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 2;
+}
+
+label {
+    margin-right: 10px;
+}
+
+tr {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #9AA2A5;
+}
+
+.clearButton {
+    background: #656e70;
+    border: none;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.noInfractions {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+}
+ 

@@ -1,0 +1,41 @@
+.row {
+    margin: 5px 0 5px ;
+}
+
+tr {
+    background-color: #D9D9D9;
+}
+
+tr td a {
+    text-decoration: none;
+    color: white;
+    background-color: black;
+}
+
+.status {
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.aprovado, .aprovada {
+    background: #00d000;
+}
+
+.rejeitado, .rejeitada {
+    background: #ff2a2a;
+}
+
+.pendente {
+    background: #ffaa00;
+}
+
+.detailsButton {
+    background: #656e70;
+    border: none;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
