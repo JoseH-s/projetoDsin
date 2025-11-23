@@ -16,16 +16,9 @@ export function formToInfraction(formData) {
 }
 
 export function uploadToInfraction(apiData) {
-    const extractedDate = processDate(apiData.cabecalho?.data_hora_infracao);
-    const currentDate = new Date().toISOString();
-
-
-    const isOldDate = extractedDate && new Date(extractedDate) < new Date('2020-01-01');
-    const finalDate = (!extractedDate || isOldDate) ? currentDate : extractedDate;
-
     return {
         descricao: apiData.infracao?.descricao_infracao || "",
-        dataHora: finalDate,
+        dataHora: processDate(apiData.cabecalho?.data_hora_infracao) || "",
 
         modelo: "",
         cor: "",

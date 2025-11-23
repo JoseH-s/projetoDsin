@@ -5,11 +5,7 @@ import { InfractionLine } from '../InfractionLine/InfractionLine';
 export function InfractionsContainer({ infractions }) {
 
     const sortedInfractions = [...infractions]
-        .sort((a, b) => {
-            const dateA = new Date(a.dataHora);
-            const dateB = new Date(b.dataHora);
-            return dateB - dateA;
-        });
+        .sort((a, b) => b.id - a.id);
 
     return (
         <div className={styles.historico}>
