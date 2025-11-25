@@ -1,8 +1,8 @@
 export const ViolationType = {
-    SPEEDING: 0,
-    PARKING: 1,
-    RED_LIGHT: 2,
-    ILLEGAL_LANE_CHANGE: 3
+    GRAVE: 0,
+    MEDIA: 1,
+    BAIXA: 2,
+    GRAVISSIMA: 3
 };
 
 /**
@@ -12,10 +12,10 @@ export const ViolationType = {
  */
 export function getViolationTypeName(value) {
     const types = {
-        0: 'Excesso de Velocidade',
-        1: 'Estacionamento Irregular',
-        2: 'Avanço de Sinal Vermelho',
-        3: 'Mudança Ilegal de Faixa'
+        0: 'Grave',
+        1: 'Média',
+        2: 'Baixa',
+        3: 'Gravíssima'
     };
     return types[value] || 'Desconhecido';
 }
@@ -26,9 +26,9 @@ export function getViolationTypeName(value) {
  */
 export function getAllViolationTypes() {
     return [
-        { value: ViolationType.SPEEDING, label: 'Excesso de Velocidade' },
-        { value: ViolationType.PARKING, label: 'Estacionamento Irregular' },
-        { value: ViolationType.RED_LIGHT, label: 'Avanço de Sinal Vermelho' },
-        { value: ViolationType.ILLEGAL_LANE_CHANGE, label: 'Mudança Ilegal de Faixa' }
+        { value: ViolationType.GRAVE, label: 'Grave' },
+        { value: ViolationType.MEDIA, label: 'Média' },
+        { value: ViolationType.BAIXA, label: 'Baixa' },
+        { value: ViolationType.GRAVISSIMA, label: 'Gravíssima' }
     ];
 }

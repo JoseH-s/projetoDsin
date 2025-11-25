@@ -3,10 +3,13 @@ import styles from './HistoryLine.module.css';
 import { useNavigate } from 'react-router-dom';
 import { formatDisplayDate } from "../../../services/dateService";
 import { getViolationTypeName } from '../../../constants/violationTypes';
+import { useInfractions } from '../../../contexts/InfractionsContext';
+import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 
 export function HistoryLine({ data }) {
     const navigate = useNavigate();
+    const { deleteInfraction } = useInfractions();
     const date = formatDisplayDate(data.dateTime);
     const violationType = getViolationTypeName(data.type);
 
@@ -16,6 +19,23 @@ export function HistoryLine({ data }) {
                 infraction: data
             }
         });
+    };
+
+    const handleEdit = (e) => {
+        e.stopPropagation();
+        navigate('/form', {
+            state: {
+                infraction: data,
+                isEdit: true
+            }
+        });
+    };
+
+    const handleDelete = async (e) => {
+        e.stopPropagation();
+        if (window.confirm(`Deseja realmente deletar a ocorrência "${data.description || 'Sem descrição'}"?`)) {
+            await deleteInfraction(data.id);
+        }
     };
 
     const statusClass = data.status
@@ -33,10 +53,18 @@ export function HistoryLine({ data }) {
                 </span>
             </td>
 
-            <td >
-                <button className={styles.detailsButton} onClick={handleClick}>
-                    + DETALHES
-                </button>
+            <td>
+                <div className={styles.actionButtons}>
+                    <button className={styles.detailsButton} onClick={handleClick}>
+                        + DETALHES
+                    </button>
+                    <button className={styles.editButton} onClick={handleEdit} title="Editar">
+                        <FiEdit2 />
+                    </button>
+                    <button className={styles.deleteButton} onClick={handleDelete} title="Deletar">
+                        <FiTrash2 />
+                    </button>
+                </div>
             </td>
         </tr>
     );

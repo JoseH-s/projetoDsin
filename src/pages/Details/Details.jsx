@@ -2,7 +2,7 @@ import { DetailsContainer } from '../../Components/Details/DetailsContainer/Deta
 import { Header } from '../../Components/layout/Header/Header';
 import { useInfractionDetails } from '../../hooks/useInfractionDetails';
 import styles from "./Details.module.css";
- 
+
 export function Details() {
     const { infraction } = useInfractionDetails();
 

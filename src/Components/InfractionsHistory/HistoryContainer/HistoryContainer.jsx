@@ -33,12 +33,12 @@ export function HistoryContainer({ infractions }) {
         const itemDate = new Date(item.dateTime);
 
         if (filters.startDate) {
-            if (itemDate < new Date(filters.startDate)) return false;
+            const startDate = new Date(filters.startDate + 'T00:00:00');
+            if (itemDate < startDate) return false;
         }
 
         if (filters.endDate) {
-            const endDate = new Date(filters.endDate);
-            endDate.setHours(23, 59, 59);
+            const endDate = new Date(filters.endDate + 'T23:59:59');
             if (itemDate > endDate) return false;
         }
 

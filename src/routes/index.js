@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { usuarioRoutes } from './usuarioRoutes';
 import { ticketRoutes } from './ticketRoutes';
 import { violationAnalysisRoutes } from './violationAnalysisRoutes';
 
@@ -14,10 +13,6 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
         if (config.data instanceof FormData) {
             delete config.headers['Content-Type'];
         }
@@ -26,21 +21,9 @@ axiosInstance.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        if (error.response?.status === 401) {
-            localStorage.removeItem('authToken');
-            window.location.href = '/login';
-        }
-        return Promise.reject(error);
-    }
-);
-
 export { axiosInstance };
 
 export const apiRoutes = {
-    usuario: usuarioRoutes,
     ticket: ticketRoutes,
     violationAnalysis: violationAnalysisRoutes
 };
@@ -71,7 +54,6 @@ export const addQueryParams = (url, queryParams = {}) => {
 
 
 export {
-    usuarioRoutes,
     ticketRoutes,
     violationAnalysisRoutes
 };

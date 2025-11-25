@@ -48,4 +48,39 @@ tr td a {
     padding: 6px 10px;
     border-radius: 4px;
     cursor: pointer;
+    margin-right: 8px;
+}
+
+.detailsButton:hover {
+    background: #4a5254;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.editButton,
+.deleteButton {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 6px 8px;
+    transition: all 0.2s;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editButton:hover {
+    color: #2196F3;
+    transform: scale(1.15);
+}
+
+.deleteButton:hover {
+    color: #f44336;
+    transform: scale(1.15);
 }

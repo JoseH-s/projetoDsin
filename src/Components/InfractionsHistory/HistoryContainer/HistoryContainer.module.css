@@ -100,6 +100,30 @@ label {
     cursor: pointer;
 }
 
+.clearButton:hover {
+    background: #4a5254;
+}
+
+.dateInput,
+.typeSelect {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.dateInput:focus,
+.typeSelect:focus {
+    outline: none;
+    border-color: #656e70;
+}
+
+.typeSelect {
+    min-width: 180px;
+}
+
 .noInfractions {
     text-align: center;
     padding: 20px;

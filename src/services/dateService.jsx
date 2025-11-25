@@ -23,9 +23,17 @@ export function processDate(dateString) {
     }
   }
 
-  // If it's already an ISO string, remove milliseconds
+  // If it's already an ISO string (from datetime-local input)
   if (dateString.includes('T')) {
-    return dateString.split('.')[0].replace('Z', '');
+    // datetime-local format: 2025-11-25T20:52
+    // Add seconds if missing
+    let isoString = dateString;
+    if (isoString.length === 16) {
+      // Missing seconds, add :00
+      isoString = isoString + ':00';
+    }
+    // Remove milliseconds and 'Z' if present
+    return isoString.split('.')[0].replace('Z', '');
   }
 
   return null;

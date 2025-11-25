@@ -1,6 +1,6 @@
 import styles from './Form.module.css';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { Sidebar } from '../../Components/layout/Sidebar/Sidebar';
 import { Header } from '../../Components/layout/Header/Header';
 import { useInfractions } from '../../contexts/InfractionsContext';
@@ -10,7 +10,11 @@ import { getAllViolationTypes } from '../../constants/violationTypes';
 
 export function Form() {
     const navigate = useNavigate();
-    const { addInfraction } = useInfractions();
+    const location = useLocation();
+    const { addInfraction, updateInfraction } = useInfractions();
+
+    const isEdit = location.state?.isEdit || false;
+    const infractionToEdit = location.state?.infraction;
 
     const initialForm = {
         brand: '',
@@ -25,6 +29,23 @@ export function Form() {
         type: '0'
     }
     const [formData, setFormData] = useState(initialForm);
+
+    useEffect(() => {
+        if (isEdit && infractionToEdit) {
+            setFormData({
+                brand: infractionToEdit.brand || '',
+                model: infractionToEdit.model || '',
+                violationLocation: infractionToEdit.violationLocation || '',
+                reference: infractionToEdit.reference || '',
+                dateTime: infractionToEdit.dateTime ? infractionToEdit.dateTime.slice(0, 16) : '',
+                state: infractionToEdit.state || '',
+                city: infractionToEdit.city || '',
+                description: infractionToEdit.description || '',
+                color: infractionToEdit.color || '',
+                type: infractionToEdit.type?.toString() || '0'
+            });
+        }
+    }, [isEdit, infractionToEdit]);
 
     const handleChange = ({ target }) => {
         const { name, value } = target;
@@ -47,11 +68,19 @@ export function Form() {
         const payload = formToTicket(formData);
 
         try {
-            await addInfraction(payload);
-            alert('Ocorrência registrada com sucesso!');
-            navigate('/')
+            if (isEdit) {
+                const success = await updateInfraction(infractionToEdit.id, payload);
+                if (success) {
+                    alert('Ocorrência atualizada com sucesso!');
+                    navigate('/history');
+                }
+            } else {
+                await addInfraction(payload);
+                alert('Ocorrência registrada com sucesso!');
+                navigate('/');
+            }
         } catch {
-            alert("Erro ao registrar ocorrência!")
+            alert(`Erro ao ${isEdit ? 'atualizar' : 'registrar'} ocorrência!`);
         }
     };
 
@@ -72,6 +101,7 @@ export function Form() {
                                 className={styles.input}
                                 value={formData.brand}
                                 onChange={handleChange}
+                                required
                             />
                         </label>
                         <label>
@@ -147,6 +177,7 @@ export function Form() {
                                 className={styles.input}
                                 value={formData.violationLocation}
                                 onChange={handleChange}
+                                required
                             />
                         </label>
                         <label>
@@ -178,6 +209,7 @@ export function Form() {
                                 className={styles.input}
                                 value={formData.dateTime}
                                 onChange={handleChange}
+                                required
                             />
                         </label>
 
@@ -188,12 +220,12 @@ export function Form() {
 
                         <div className={styles.confirmWrap}>
                             <button type="submit" className={styles.confirmBtn}>
-                                Confirmar
+                                {isEdit ? 'Atualizar' : 'Confirmar'}
                             </button>
                             <button
                                 type="button"
                                 className={styles.cancelBtn}
-                                onClick={() => navigate('/')}
+                                onClick={() => navigate(isEdit ? '/history' : '/')}
                             >
                                 Cancelar
                             </button>
@@ -206,4 +238,3 @@ export function Form() {
 }
 
 export default Form;
-
