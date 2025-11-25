@@ -8,13 +8,13 @@ export function StatsContainer() {
     const { infractions } = useInfractions();
 
     const ocorrenciasHojeLista = infractions.filter(item => {
-        const iso = processDate(item.dataHora);
+        const iso = processDate(item.dateTime);
         if (!iso) return false;
 
         const date = new Date(iso);
         return isToday(date);
     })
-    
+
     const ocorrenciasHoje = ocorrenciasHojeLista.length;
 
     const rejeitadas = infractions.filter(item =>

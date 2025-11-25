@@ -17,11 +17,54 @@
     table-layout: fixed;
 }
 
+.table th,
+.table td {
+    padding: 12px 8px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table td:nth-child(2) {
+    white-space: normal;
+    overflow: visible;
+}
+
+.table td:nth-child(1) {
+    width: 110px;
+    min-width: 110px;
+    max-width: 110px;
+    padding-left: 20px;
+    text-align: left;
+}
+
+.table td:nth-child(2) {
+    width: calc(100% - 300px);
+}
+
+.table td:nth-child(3) {
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+    text-align: center;
+    padding-left: 20px;
+}
+
+.table td:nth-child(4) {
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+    text-align: center;
+    padding-right: 20px;
+}
+
 
 .tableWrapper table thead {
     position: sticky;
     top: 0;
-    background: #fff;
+    background: #9AA2A5;
     z-index: 2;
 }
 
@@ -29,11 +72,23 @@ label {
     margin-right: 10px;
 }
 
-tr {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
+.table tbody tr {
+    background-color: #D9D9D9;
+    border-bottom: 5px solid #9AA2A5;
+    height: 60px;
+}
+
+.table thead tr {
     background-color: #9AA2A5;
+}
+
+.table thead th {
+    background-color: #9AA2A5;
+    padding: 15px 8px;
+}
+
+.table thead th:last-child {
+    text-align: center;
 }
 
 .clearButton {
@@ -50,4 +105,3 @@ tr {
     padding: 20px;
     color: #999;
 }
- 

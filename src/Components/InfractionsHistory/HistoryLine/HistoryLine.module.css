@@ -1,5 +1,13 @@
 .row {
-    margin: 5px 0 5px ;
+    background-color: #D9D9D9;
+}
+
+.row td {
+    padding: 12px 8px;
+}
+
+.row td:first-child {
+    padding-left: 20px;
 }
 
 tr {
@@ -19,11 +27,13 @@ tr td a {
     color: #fff;
 }
 
-.aprovado, .aprovada {
+.aprovado,
+.aprovada {
     background: #00d000;
 }
 
-.rejeitado, .rejeitada {
+.rejeitado,
+.rejeitada {
     background: #ff2a2a;
 }
 

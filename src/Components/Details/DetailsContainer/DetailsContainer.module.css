@@ -2,7 +2,7 @@
     width: 100%;
     overflow-x: auto;
     border-radius: 10px;
-    border: 1px solid;
+    border: 1px solid #000;
 }
 
 .detailTable {
@@ -10,39 +10,113 @@
     table-layout: fixed;
     border-collapse: collapse;
     min-width: 1200px;
-    
 }
 
 .detailTable th,
 .detailTable td {
-    text-align: left;
-    padding: 12px 8px;
+    text-align: center;
+    /* CENTRALIZAÇÃO */
+    padding: 10px 6px;
     word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    /* CENTRALIZA VERTICALMENTE */
 }
 
 .detailTable tr {
     background-color: #9AA2A5;
 }
 
-.descricao {
-    width: 200px;
+/* ==== LARGURAS DAS COLUNAS ==== */
+.date {
+    width: 90px;
 }
 
+.descricao {
+    width: 320px;
+}
+
+.modelo {
+    width: 120px;
+}
+
+.cor {
+    width: 80px;
+}
+
+.local {
+    width: 130px;
+}
+
+.referencia {
+    width: 120px;
+}
+
+.cidade {
+    width: 120px;
+}
+
+.estado {
+    width: 70px;
+}
+
+.tipoViolacao {
+    width: 140px;
+}
+
+.statusCol {
+    width: 110px;
+}
+
+/* ==== STATUS ==== */
 .statusLine {
     padding: 5px 12px;
     border-radius: 6px;
     font-weight: bold;
     color: #fff;
+    display: inline-block;
 }
 
-.aprovado, .aprovada {
+.aprovado,
+.aprovada {
     background: #00d000;
 }
 
-.rejeitado, .rejeitada {
+.rejeitado,
+.rejeitada {
     background: #ff2a2a;
 }
 
 .pendente {
     background: #ffaa00;
+}
+
+/* ==== EXPANDIR DESCRIÇÃO NO HOVER ==== */
+.detailTable td.descricao {
+    position: relative;
+}
+
+.detailTable td.descricao:hover {
+    overflow: visible;
+    white-space: normal;
+    z-index: 10;
+}
+
+.detailTable td.descricao:hover::after {
+    content: attr(data-full);
+    position: absolute;
+    left: 0;
+    top: -5px;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    max-width: 400px;
+    min-width: 300px;
+    color: #000;
+    z-index: 99;
+    border: 1px solid #666;
+    text-align: left;
+    white-space: normal;
 }

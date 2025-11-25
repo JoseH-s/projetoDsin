@@ -1,23 +1,32 @@
 import styles from './Form.module.css';
-import { useNavigate} from 'react-router-dom';
-import { useState} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { Sidebar } from '../../Components/layout/Sidebar/Sidebar';
 import { Header } from '../../Components/layout/Header/Header';
 import { useInfractions } from '../../contexts/InfractionsContext';
-import { formToInfraction } from '../../services/infractionMapper';
-import { validateInfraction } from '../../services/validateInfractionForm';
+import { formToTicket } from '../../services/ticketMapper';
+import { validateTicket } from '../../services/validateTicketForm';
+import { getAllViolationTypes } from '../../constants/violationTypes';
 
 export function Form() {
     const navigate = useNavigate();
     const { addInfraction } = useInfractions();
 
     const initialForm = {
-        dataHora: '',
-        descricao: '',
+        brand: '',
+        model: '',
+        violationLocation: '',
+        reference: '',
+        dateTime: '',
+        state: '',
+        city: '',
+        description: '',
+        color: '',
+        type: '0'
     }
     const [formData, setFormData] = useState(initialForm);
 
-    const handleChange = ( { target }) => {
+    const handleChange = ({ target }) => {
         const { name, value } = target;
 
         setFormData(prev => {
@@ -29,20 +38,20 @@ export function Form() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const error = validateInfraction(formData);
+        const error = validateTicket(formData);
         if (error) {
             alert(error);
             return;
         }
 
-        const payload = formToInfraction(formData);
+        const payload = formToTicket(formData);
 
         try {
             await addInfraction(payload);
             alert('Ocorrência registrada com sucesso!');
             navigate('/')
         } catch {
-            alert("Erro ao registrar a ocorrência!")
+            alert("Erro ao registrar ocorrência!")
         }
     };
 
@@ -52,132 +61,91 @@ export function Form() {
             <Sidebar />
             <main className={styles.content}>
                 <form className={styles.form} onSubmit={handleSubmit}>
-                    
-                    <div className={styles.column}>
-                        {/* <h4>Dados do agente</h4>
-                        <label>
-                            Matrícula
-                            <input
-                                type="text"
-                                name="matriculaAgente"
-                                className={styles.input}
-                                value={formData.matriculaAgente}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <label>
-                            Nome
-                            <input
-                                type="text"
-                                name="nomeAgente"
-                                className={styles.input}
-                                value={formData.nomeAgente}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <label>
-                            Órgão responsável
-                            <input
-                                type="text"
-                                name="orgaoAutuador"
-                                className={styles.input}
-                                value={formData.orgaoAutuador}
-                                onChange={handleChange}
-                            />
-                        </label> */}
-
-                        <h4>Infração cometida *</h4>
-                        <label>
-                            Descrição da infração
-                            <input
-                                type="text"
-                                name="descricao"
-                                className={styles.input}
-                                value={formData.descricao}
-                                onChange={handleChange}
-                            ></input>
-                        </label>
-                    </div>
 
                     <div className={styles.column}>
-                        {/* <h4>Identificação do veículo *</h4>
+                        <h4>Informações do Veículo *</h4>
                         <label>
-                            Placa
+                            Marca
                             <input
                                 type="text"
-                                name="placa"
+                                name="brand"
                                 className={styles.input}
-                                value={formData.placa}
+                                value={formData.brand}
+                                onChange={handleChange}
+                            />
+                        </label>
+                        <label>
+                            Modelo *
+                            <input
+                                type="text"
+                                name="model"
+                                className={styles.input}
+                                value={formData.model}
                                 onChange={handleChange}
                                 required
-                            />
-                        </label>
-                        <label>
-                            UF
-                            <input
-                                type="text"
-                                name="ufPlaca"
-                                className={styles.input}
-                                value={formData.ufPlaca}
-                                onChange={handleChange}
-                                maxLength="2"
-                            />
-                        </label>
-                        <label>
-                            Marca/Modelo
-                            <input
-                                type="text"
-                                name="marcaModelo"
-                                className={styles.input}
-                                value={formData.marcaModelo}
-                                onChange={handleChange}
                             />
                         </label>
                         <label>
                             Cor
                             <input
                                 type="text"
-                                name="cor"
+                                name="color"
                                 className={styles.input}
-                                value={formData.cor}
-                                onChange={handleChange}
-                            />
-                        </label> */}
-
-                        {/* <h4>Identificação do condutor</h4>
-                        <label>
-                            Nome
-                            <input
-                                type="text"
-                                name="nomeCondutor"
-                                className={styles.input}
-                                value={formData.nomeCondutor}
+                                value={formData.color}
                                 onChange={handleChange}
                             />
                         </label>
-                        <label>
-                            UF CNH
-                            <input
-                                type="text"
-                                name="ufCnh"
-                                className={styles.input}
-                                value={formData.ufCnh}
-                                onChange={handleChange}
-                                maxLength="2"
-                            />
-                        </label> */}
-                        
                     </div>
 
                     <div className={styles.column}>
-                        <h4>Data e local da infração</h4>
-                        {/* <label>
-                            Endereço / Local
+                        <h4>Detalhes da Infração *</h4>
+                        <label>
+                            Tipo de Infração *
+                            <select
+                                name="type"
+                                className={styles.input}
+                                value={formData.type}
+                                onChange={handleChange}
+                                required
+                            >
+                                {getAllViolationTypes().map(vType => (
+                                    <option key={vType.value} value={vType.value}>
+                                        {vType.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+                        <label>
+                            Descrição
+                            <textarea
+                                name="description"
+                                className={styles.textarea}
+                                value={formData.description}
+                                onChange={handleChange}
+                                rows="4"
+                            />
+                        </label>
+                        <label>
+                            Referência
                             <input
                                 type="text"
-                                name="localInfracao"
+                                name="reference"
                                 className={styles.input}
-                                value={formData.localInfracao}
+                                value={formData.reference}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
+
+                    <div className={styles.column}>
+                        <h4>Localização e Data</h4>
+                        <label>
+                            Local da Infração
+                            <input
+                                type="text"
+                                name="violationLocation"
+                                className={styles.input}
+                                value={formData.violationLocation}
                                 onChange={handleChange}
                             />
                         </label>
@@ -185,38 +153,37 @@ export function Form() {
                             Cidade
                             <input
                                 type="text"
-                                name="cidade"
+                                name="city"
                                 className={styles.input}
-                                value={formData.cidade}
+                                value={formData.city}
                                 onChange={handleChange}
                             />
-                        </label> */}
+                        </label>
                         <label>
-                            Data e hora do registro
+                            Estado
                             <input
                                 type="text"
-                                name="dataHora"
+                                name="state"
                                 className={styles.input}
-                                value={formData.dataHora}
+                                value={formData.state}
                                 onChange={handleChange}
-                                placeholder="DD/MM/AAAA HH:MM:SS"
+                                maxLength="2"
+                            />
+                        </label>
+                        <label>
+                            Data e Hora
+                            <input
+                                type="datetime-local"
+                                name="dateTime"
+                                className={styles.input}
+                                value={formData.dateTime}
+                                onChange={handleChange}
                             />
                         </label>
 
-                        {/* <h4>Observações do agente</h4>
-                        <label>
-                            <textarea
-                                name="obsAgente"
-                                className={styles.textarea}
-                                value={formData.obsAgente}
-                                onChange={handleChange}
-                                rows="4"
-                            ></textarea>
-                        </label> */}
-
                         <label className={styles.checkboxLabel}>
                             <input type="checkbox" required />
-                            Eu me responsabilizo pelas informações inseridas no formulário e estou ciente das implicações legais do registro de infrações.
+                            Sou responsável pelas informações inseridas e estou ciente das implicações legais.
                         </label>
 
                         <div className={styles.confirmWrap}>

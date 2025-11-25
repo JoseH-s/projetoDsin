@@ -7,5 +7,8 @@ export function validateInfraction(formData) {
         return "A data da infração é obrigatória."
     }
 
+    if (!formData.descricao.length < 5) {
+        return "A descrição inválida";
+    }
     return null;
 }

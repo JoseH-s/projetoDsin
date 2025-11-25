@@ -1,12 +1,9 @@
 import axios from 'axios';
-import { condutorRoutes } from './condutorRoutes';
-import { multaRoutes } from './multaRoutes';
-import { tipoMultaRoutes } from './tipoMultaRoutes';
 import { usuarioRoutes } from './usuarioRoutes';
-import { veiculoRoutes } from './veiculoRoutes';
-import { geminiRoutes } from './geminiRoutes';
+import { ticketRoutes } from './ticketRoutes';
+import { violationAnalysisRoutes } from './violationAnalysisRoutes';
 
-export const API_BASE_URL = 'https://localhost:7103';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://localhost:7103';
 
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
@@ -43,12 +40,9 @@ axiosInstance.interceptors.response.use(
 export { axiosInstance };
 
 export const apiRoutes = {
-    condutor: condutorRoutes,
-    multa: multaRoutes,
-    tipoMulta: tipoMultaRoutes,
     usuario: usuarioRoutes,
-    veiculo: veiculoRoutes,
-    gemini: geminiRoutes
+    ticket: ticketRoutes,
+    violationAnalysis: violationAnalysisRoutes
 };
 
 export const buildUrl = (path, params = {}) => {
@@ -77,10 +71,7 @@ export const addQueryParams = (url, queryParams = {}) => {
 
 
 export {
-    condutorRoutes,
-    multaRoutes,
-    tipoMultaRoutes,
     usuarioRoutes,
-    veiculoRoutes,
-    geminiRoutes
+    ticketRoutes,
+    violationAnalysisRoutes
 };

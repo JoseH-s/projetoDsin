@@ -2,6 +2,8 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './HistoryContainer.module.css';
 import { HistoryLine } from '../HistoryLine/HistoryLine';
+import { getAllViolationTypes } from '../../../constants/violationTypes';
+
 export function HistoryContainer({ infractions }) {
 
     const [filters, setFilters] = useState({
@@ -10,12 +12,7 @@ export function HistoryContainer({ infractions }) {
         type: ''
     });
 
-    const infractionTypes = [
-        "Leve",
-        "Média",
-        "Grave",
-        "Gravíssima"
-    ];
+    const violationTypes = getAllViolationTypes();
 
     const handleFilterChange = (field, value) => {
         setFilters(prev => ({
@@ -33,7 +30,7 @@ export function HistoryContainer({ infractions }) {
     };
 
     const filteredInfractions = infractions.filter(item => {
-        const itemDate = new Date(item.dataHora);
+        const itemDate = new Date(item.dateTime);
 
         if (filters.startDate) {
             if (itemDate < new Date(filters.startDate)) return false;
@@ -45,9 +42,9 @@ export function HistoryContainer({ infractions }) {
             if (itemDate > endDate) return false;
         }
 
-        if (filters.type) {
-            const itemType = item.tipoMulta?.nome ?? "";
-            if (itemType.toLowerCase() !== filters.type.toLowerCase()) {
+        if (filters.type !== '') {
+            const itemType = item.type;
+            if (itemType !== parseInt(filters.type)) {
                 return false;
             }
         }
@@ -89,9 +86,9 @@ export function HistoryContainer({ infractions }) {
                                     className={styles.typeSelect}
                                 >
                                     <option value="">Todos os tipos</option>
-                                    {infractionTypes.map((type, index) => (
-                                        <option key={index} value={type}>
-                                            {type}
+                                    {violationTypes.map((type) => (
+                                        <option key={type.value} value={type.value}>
+                                            {type.label}
                                         </option>
                                     ))}
                                 </select>
@@ -111,7 +108,7 @@ export function HistoryContainer({ infractions }) {
                     <tbody>
                         {filteredInfractions.length === 0 ? (
                             <tr>
-                                <td colSpan="6" className={styles.noInfractions}>
+                                <td colSpan="4" className={styles.noInfractions}>
                                     Nenhuma ocorrência encontrada
                                 </td>
                             </tr>

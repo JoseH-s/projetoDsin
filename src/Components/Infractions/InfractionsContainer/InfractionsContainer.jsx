@@ -26,9 +26,6 @@ export function InfractionsContainer({ infractions }) {
                         return (
                             <InfractionLine
                                 key={item.id}
-                                dataHora={item.dataHora}
-                                descricao={item.descricao}
-                                status={item.status}
                                 data={item}
                             />
                         );
@@ -42,8 +39,10 @@ export function InfractionsContainer({ infractions }) {
 InfractionsContainer.propTypes = {
     infractions: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        dataHora: PropTypes.string.isRequired,
-        descricao: PropTypes.string.isRequired,
-        status: PropTypes.string.isRequired,
+        dateTime: PropTypes.string.isRequired,
+        model: PropTypes.string.isRequired,
+        description: PropTypes.string,
+        type: PropTypes.number.isRequired,
+        status: PropTypes.string,
     })).isRequired,
 };

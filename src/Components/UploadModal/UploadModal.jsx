@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
-import { geminiRoutes } from '../../routes/geminiRoutes';
+import { violationAnalysisRoutes } from '../../routes/violationAnalysisRoutes';
 import { axiosInstance } from '../../routes';
 import { useNavigate } from 'react-router-dom';
 import styles from './UploadModal.module.css';
-import { uploadToInfraction } from '../../services/infractionMapper';
+import { violationAnalysisToTicket } from '../../services/ticketMapper';
 
 export function UploadModal({ isOpen, onClose, onSuccess }) {
     const [preview, setPreview] = useState(null);
@@ -19,7 +19,7 @@ export function UploadModal({ isOpen, onClose, onSuccess }) {
 
     const processFile = (file) => {
         if (!file) return;
-        setSelectedFile(file);  
+        setSelectedFile(file);
         const reader = new FileReader();
 
         reader.onload = (e) => {
@@ -50,14 +50,14 @@ export function UploadModal({ isOpen, onClose, onSuccess }) {
 
         try {
             const formData = new FormData();
-            formData.append('file', selectedFile);
+            formData.append('image', selectedFile);
             const response = await axiosInstance.post(
-                geminiRoutes.processarImagemJson.path,
+                violationAnalysisRoutes.analyzeImage.path,
                 formData
             );
 
-            const infraction = uploadToInfraction(response.data);
-            onSuccess(infraction);
+            const ticket = violationAnalysisToTicket(response.data);
+            onSuccess(ticket);
 
             clearPreview();
             onClose();
@@ -88,7 +88,7 @@ export function UploadModal({ isOpen, onClose, onSuccess }) {
                     className={`${styles.uploadArea} ${isDragActive ? styles.dragActive : ''}`}
                     {...getRootProps()}
                 >
-                    
+
                     {preview ? (
                         <>
                             <img src={preview} alt="Preview" className={styles.previewImage} />
