@@ -1,0 +1,111 @@
+### Violation Analysis API - Image-Based Requests
+
+@baseUrl = https://localhost:7000
+@imagePath = C:/caminho/para/sua/imagem.jpg
+
+### IMPORTANTE: Estes exemplos usam a extensão REST Client do VS Code
+### Para testar via Swagger, acesse: https://localhost:7000/swagger
+
+### 1. Basic Violation Analysis with Image
+POST {{baseUrl}}/api/ViolationAnalysis/analyze
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="Image"; filename="violation.jpg"
+Content-Type: image/jpeg
+
+< {{imagePath}}
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### 2. Violation Analysis with Additional Context
+POST {{baseUrl}}/api/ViolationAnalysis/analyze
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="Image"; filename="violation.jpg"
+Content-Type: image/jpeg
+
+< {{imagePath}}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="AdditionalContext"
+
+Infração registrada na Avenida Paulista, próximo ao MASP, em São Paulo/SP. Veículo passou sinal vermelho às 14:30.
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### 3. Streaming Analysis (Server-Sent Events)
+POST {{baseUrl}}/api/ViolationAnalysis/analyze-stream
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="Image"; filename="violation.jpg"
+Content-Type: image/jpeg
+
+< {{imagePath}}
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###############################################
+# Exemplos de uso com cURL (Terminal)
+###############################################
+
+# Windows PowerShell
+# $uri = "https://localhost:7000/api/ViolationAnalysis/analyze"
+# $imagePath = "C:\caminho\para\imagem.jpg"
+# $form = @{ Image = Get-Item -Path $imagePath; AdditionalContext = "Contexto adicional" }
+# Invoke-RestMethod -Uri $uri -Method Post -Form $form -SkipCertificateCheck
+
+# Linux/Mac (bash)
+# curl -X POST "https://localhost:7000/api/ViolationAnalysis/analyze" \
+#   -k \
+#   -F "Image=@/caminho/para/imagem.jpg" \
+#   -F "AdditionalContext=Contexto adicional"
+
+###############################################
+# Exemplo com Python
+###############################################
+
+# import requests
+# 
+# url = "https://localhost:7000/api/ViolationAnalysis/analyze"
+# files = {'Image': open('caminho/para/imagem.jpg', 'rb')}
+# data = {'AdditionalContext': 'Infração na Avenida Paulista'}
+# 
+# response = requests.post(url, files=files, data=data, verify=False)
+# print(response.json())
+
+###############################################
+# Exemplo com JavaScript (Node.js)
+###############################################
+
+# const FormData = require('form-data');
+# const fs = require('fs');
+# const fetch = require('node-fetch');
+# 
+# const form = new FormData();
+# form.append('Image', fs.createReadStream('caminho/para/imagem.jpg'));
+# form.append('AdditionalContext', 'Infração na Avenida Paulista');
+# 
+# fetch('https://localhost:7000/api/ViolationAnalysis/analyze', {
+#   method: 'POST',
+#   body: form,
+#   headers: form.getHeaders()
+# })
+# .then(res => res.json())
+# .then(json => console.log(json));
+
+###############################################
+# Resposta Esperada (JSON)
+###############################################
+
+# {
+#   "brand": "Fiat",
+#   "model": "Uno",
+#   "violationLocation": "Avenida Paulista, próximo ao MASP",
+#   "reference": "MASP",
+#   "datetime": "25/11/2025 às 14:30",
+#   "state": "SP",
+#   "city": "São Paulo",
+#   "description": "Veículo passou sinal vermelho",
+#   "color": "vermelho",
+#   "type": "gravissima"
+# }
+
