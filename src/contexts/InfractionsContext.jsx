@@ -14,15 +14,8 @@ export function InfractionsProvider({ children }) {
                 console.log("DADOS RECEBIDOS:", response.data);
                 setInfractions(response.data);
             } catch (error) {
-                try {
-                    console.log("Tentando endpoint antigo /api/Multa...");
-                    const response = await axiosInstance.get('/api/Multa');
-                    console.log("DADOS RECEBIDOS (endpoint antigo):", response.data);
-                    setInfractions(response.data);
-                } catch (fallbackError) {
-                    console.error("Erro ao buscar dados:", fallbackError);
-                    console.log("Verifique se o backend está rodando e tem os endpoints corretos");
-                }
+                console.error("Erro ao buscar dados:", error);
+                console.log("Verifique se o backend está rodando e tem os endpoints corretos");
             } finally {
                 setLoading(false);
             }
