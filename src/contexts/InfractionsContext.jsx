@@ -80,7 +80,7 @@ export function InfractionsProvider({ children }) {
             console.log("Ocorrência adicionada com sucesso:", response.data);
             alert("Ocorrência criada com sucesso!");
         } catch (error) {
-            console.error("Erro completo:", error);
+            console.error("Erro ao atualizar:", error);
 
             if (error.response) {
                 console.error("Status:", error.response.status);

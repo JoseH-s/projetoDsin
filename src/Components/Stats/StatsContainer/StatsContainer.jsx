@@ -7,7 +7,7 @@ import { processDate, isToday } from "../../../services/dateService";
 export function StatsContainer() {
     const { infractions } = useInfractions();
 
-    const ocorrenciasHojeLista = infractions.filter(item => {
+    const todayInfractionsList = infractions.filter(item => {
         const iso = processDate(item.dateTime);
         if (!iso) return false;
 
@@ -15,20 +15,20 @@ export function StatsContainer() {
         return isToday(date);
     })
 
-    const ocorrenciasHoje = ocorrenciasHojeLista.length;
+    const todayInfractions = todayInfractionsList.length;;
 
-    const rejeitadas = infractions.filter(item =>
+    const rejected = infractions.filter(item =>
         item.status?.toLowerCase() === 'rejeitado' ||
         item.status?.toLowerCase() === 'rejeitada'
     ).length;
 
-    const pendentes = infractions.filter(item =>
+    const pending = infractions.filter(item =>
         item.status?.toLowerCase() === 'pendente' ||
         item.status?.toLowerCase() === 'pendente de revisão' ||
         !item.status
     ).length;
 
-    const aprovadas = infractions.filter(item =>
+    const approved = infractions.filter(item =>
         item.status?.toLowerCase() === 'aprovado' ||
         item.status?.toLowerCase() === 'aprovada'
     ).length;
@@ -36,23 +36,23 @@ export function StatsContainer() {
     const stats = [
         {
             title: "OCORRÊNCIAS DO DIA",
-            value: ocorrenciasHoje.toString(),
+            value: todayInfractions.toString(),
             icon: FaCalendarDay,
-            items: ocorrenciasHojeLista
+            items: todayInfractionsList
         },
         {
             title: "REJEITADAS",
-            value: rejeitadas.toString(),
+            value: rejected.toString(),
             icon: FaTimes
         },
         {
             title: "PENDENTES DE REVISÃO",
-            value: pendentes.toString(),
+            value: pending.toString(),
             icon: FaHourglassHalf
         },
         {
             title: "APROVADAS",
-            value: aprovadas.toString(),
+            value: approved.toString(),
             icon: FaCheck
         },
     ];
